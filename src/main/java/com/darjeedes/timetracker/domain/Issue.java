@@ -2,7 +2,15 @@ package com.darjeedes.timetracker.domain;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Issue {
+
+    @Id
+    private int id;
 
     /**
      * The issue number the issue has in the issue management system.
@@ -22,6 +30,7 @@ public class Issue {
     /**
      * The list of time entries that represent the work time.
      */
+    @OneToMany
     private List<TimeEntry> timeEntries;
 
 }
