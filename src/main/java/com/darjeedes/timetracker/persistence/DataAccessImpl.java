@@ -19,42 +19,47 @@ public class DataAccessImpl implements DataAccess {
 
         this.entityManager = emfactory.createEntityManager();
 
-        try {
-            // load driver
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-
-        }
+//        try {
+        // load driver
+//            Class.forName("org.h2.Driver");
+//            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+//        } catch (ClassNotFoundException e) {
+//
+//        }
     }
 
     @Override
     public BaseData getBaseData() {
-        System.out.println("After Sucessfully insertion ");
-        BaseData baseData1 = saveBaseData("Sumith");
-        BaseData baseData2 = saveBaseData("Anoop");
-        listBaseData();
-//        System.out.println("After Sucessfully modification ");
-//        updateBaseData(baseData1.getBaseDataId(), "Sumith Honai");
-//        updateBaseData(baseData2.getBaseDataId(), "Anoop Pavanai");
-//        listBaseData();
-//        System.out.println("After Sucessfully deletion ");
-//        deleteBaseData(baseData2.getBaseDataId());
-//        listBaseData();
+        BaseData baseData = null;
 
-        return new BaseData();
-    }
-
-    public BaseData saveBaseData(String baseDataName) {
-        BaseData baseData = new BaseData();
         try {
             entityManager.getTransaction().begin();
-            baseData.setIssueManagementSystemBaseUrl(baseDataName);
-            baseData = entityManager.merge(baseData);
+//            baseData = entityManager.find(BaseData.class, baseData.getId());
+            baseData = entityManager.find(BaseData.class, 1);
+//            List<BaseData> BaseDatas = entityManager.createQuery("from BaseData").getResultList();
+//            System.out.println(BaseDatas.toString());
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
         }
+
+        return (baseData != null) ? baseData : new BaseData();
+    }
+
+    @Override
+    public BaseData saveBaseData(BaseData baseData) {
+
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(baseData);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+        }
+
         return baseData;
+
     }
 
     public void listBaseData() {
@@ -62,7 +67,7 @@ public class DataAccessImpl implements DataAccess {
             entityManager.getTransaction().begin();
             @SuppressWarnings("unchecked")
             List<BaseData> BaseDatas = entityManager.createQuery("from BaseData").getResultList();
-            for (Iterator<BaseData> iterator = BaseDatas.iterator(); iterator.hasNext();) {
+            for (Iterator<BaseData> iterator = BaseDatas.iterator(); iterator.hasNext(); ) {
                 BaseData baseData = (BaseData) iterator.next();
 //                System.out.println(baseData.getBaseDataName());
             }
@@ -71,28 +76,6 @@ public class DataAccessImpl implements DataAccess {
             entityManager.getTransaction().rollback();
         }
     }
-//
-//    public void updateBaseData(Long baseDataId, String baseDataName) {
-//        try {
-//            entityManager.getTransaction().begin();
-//            BaseData baseData = (BaseData) entityManager.find(BaseData.class, baseDataId);
-//            baseData.setBaseDataName(baseDataName);
-//            entityManager.getTransaction().commit();
-//        } catch (Exception e) {
-//            entityManager.getTransaction().rollback();
-//        }
-//    }
-//
-//    public void deleteBaseData(Long baseDataId) {
-//        try {
-//            entityManager.getTransaction().begin();
-//            BaseData baseData = (BaseData) entityManager.find(BaseData.class, baseDataId);
-//            entityManager.remove(baseData);
-//            entityManager.getTransaction().commit();
-//        } catch (Exception e) {
-//            entityManager.getTransaction().rollback();
-//        }
-//    }
 
 }
 

@@ -7,12 +7,14 @@
 		<class>com.darjeedes.timetracker.domain.Issue</class>
 		<class>com.darjeedes.timetracker.domain.TimeEntry</class>
 		<properties>
+<!--			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>-->
+<!--			<property name="javax.persistence.jdbc.url" value="jdbc:derby:derbyDB"/>-->
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:./test"/>
 			<property name="javax.persistence.jdbc.user" value="sa"/>
 			<property name="javax.persistence.jdbc.password" value=""/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
 			<property name="show_sql" value="true"/>
 			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
 		</properties>

@@ -1,8 +1,11 @@
 package com.darjeedes.timetracker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -10,12 +13,17 @@ import javax.persistence.OneToMany;
 public class BaseData {
 
     @Id
+    @GeneratedValue
     private int id;
 
     private String issueManagementSystemBaseUrl;
 
-    @OneToMany
-    private List<Context> contexts;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<Context> contexts = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
 
     public String getIssueManagementSystemBaseUrl() {
         return issueManagementSystemBaseUrl;
@@ -23,5 +31,13 @@ public class BaseData {
 
     public void setIssueManagementSystemBaseUrl(final String issueManagementSystemBaseUrl) {
         this.issueManagementSystemBaseUrl = issueManagementSystemBaseUrl;
+    }
+
+    public List<Context> getContexts() {
+        return contexts;
+    }
+
+    public void setContexts(final List<Context> contexts) {
+        this.contexts = contexts;
     }
 }

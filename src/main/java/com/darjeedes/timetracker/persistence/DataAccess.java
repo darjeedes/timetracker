@@ -6,4 +6,6 @@ public interface DataAccess {
 
     BaseData getBaseData();
 
+    BaseData saveBaseData(BaseData baseData);
+
 }

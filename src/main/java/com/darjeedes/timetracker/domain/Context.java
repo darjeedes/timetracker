@@ -3,6 +3,7 @@ package com.darjeedes.timetracker.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -13,12 +14,13 @@ import javax.persistence.OneToMany;
 public class Context {
 
     @Id
+    @GeneratedValue
     private int id;
 
     /**
      * The display name of the context.
      */
-    private String name;
+    private String name = "context123";
 
     /**
      * The JIRA-Tag of the context.
@@ -31,4 +33,8 @@ public class Context {
     @OneToMany
     private List<Issue> issues;
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
