@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.darjeedes.timetracker.domain.BaseData;
+import com.darjeedes.timetracker.domain.Context;
 
 public class DataAccessImpl implements DataAccess {
 
@@ -60,6 +61,39 @@ public class DataAccessImpl implements DataAccess {
 
         return baseData;
 
+    }
+
+    @Override
+    public Context saveContext(final Context context) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(context);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+        }
+
+        return context;
+    }
+
+    /**
+     * Saves an Entity to the DB. Returns null on fail.
+     * @param timeTrackerEntity
+     * @return
+     */
+    public TimeTrackerEntity save(TimeTrackerEntity timeTrackerEntity) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(timeTrackerEntity);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            return null;
+        }
+
+        return timeTrackerEntity;
     }
 
     public void listBaseData() {

@@ -17,10 +17,12 @@ public class Controller {
     private BaseData baseData;
 
     private Context currentContext;
-    private Issue currentIssue;
 
     @FXML
-    private ComboBox<Context> contextComboBox;
+    private ComboBox<Context> CB_Contexts;
+
+    @FXML
+    private ComboBox<Issue> issueComboBox;
 
     public Controller() {
 
@@ -38,11 +40,22 @@ public class Controller {
     }
 
     public void onSaveButtonClick() {
-        this.dataAccess.saveBaseData(this.baseData);
+        this.dataAccess.save(this.baseData);
+    }
+
+    public void saveContext() {
+        this.dataAccess.save(this.currentContext);
+    }
+
+    public void loadContext() {
+        if (CB_Contexts.getValue() != null) {
+            this.currentContext = CB_Contexts.getValue();
+            issueComboBox.setItems(FXCollections.observableList(this.currentContext.getIssues()));
+        }
     }
 
     public void updateComboBox() {
-        this.contextComboBox.setItems(FXCollections.observableList(this.baseData.getContexts()));
+        this.CB_Contexts.setItems(FXCollections.observableList(this.baseData.getContexts()));
     }
 
     public BaseData getBaseData() {
@@ -59,14 +72,6 @@ public class Controller {
 
     public void setCurrentContext(final Context currentContext) {
         this.currentContext = currentContext;
-    }
-
-    public Issue getCurrentIssue() {
-        return currentIssue;
-    }
-
-    public void setCurrentIssue(final Issue currentIssue) {
-        this.currentIssue = currentIssue;
     }
 
 }

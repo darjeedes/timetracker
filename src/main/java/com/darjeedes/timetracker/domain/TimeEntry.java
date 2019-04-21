@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
+
 @Entity
-public class TimeEntry {
+public class TimeEntry extends TimeTrackerEntity {
 
     @Id
     @GeneratedValue

@@ -1,5 +1,6 @@
 package com.darjeedes.timetracker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -7,11 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
+
 /**
  * Represents the context of the work being done, i.e. the project that is being worked on.
  */
 @Entity
-public class Context {
+public class Context extends TimeTrackerEntity {
 
     @Id
     @GeneratedValue
@@ -32,6 +35,14 @@ public class Context {
      */
     @OneToMany
     private List<Issue> issues;
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(final List<Issue> issues) {
+        this.issues = issues;
+    }
 
     @Override
     public String toString() {

@@ -9,8 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
+
 @Entity
-public class BaseData {
+public class BaseData extends TimeTrackerEntity {
 
     @Id
     @GeneratedValue

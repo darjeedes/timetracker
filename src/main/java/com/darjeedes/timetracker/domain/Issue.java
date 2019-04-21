@@ -7,8 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
+
 @Entity
-public class Issue {
+public class Issue extends TimeTrackerEntity {
 
     @Id
     @GeneratedValue
