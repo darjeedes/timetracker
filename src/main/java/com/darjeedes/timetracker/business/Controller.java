@@ -38,7 +38,7 @@ public class Controller {
     }
 
     public void onSaveButtonClick() {
-//        this.dataAccess.saveBaseData(this.baseData);
+        this.dataAccess.saveBaseData(this.baseData);
     }
 
     public void updateComboBox() {

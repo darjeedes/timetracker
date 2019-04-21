@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--<!DOCTYPE hibernate-configuration PUBLIC-->
+<!--		"-//Hibernate/Hibernate Configuration DTD//EN"-->
+<!--		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">-->
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.url">jdbc:h2:mem:test</property>
+		<property name="dialect">org.hibernate.dialect.H2Dialect</property>
+
+		<mapping class="com.darjeedes.timetracker.domain.BaseData" />
+		<mapping class="com.darjeedes.timetracker.domain.Context" />
+		<mapping class="com.darjeedes.timetracker.domain.Issue" />
+		<mapping class="com.darjeedes.timetracker.domain.TimeEntry" />
+	</session-factory>
+</hibernate-configuration>
