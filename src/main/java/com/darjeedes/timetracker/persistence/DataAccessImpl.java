@@ -16,16 +16,7 @@ public class DataAccessImpl implements DataAccess {
     public DataAccessImpl() {
 
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("test");
-
         this.entityManager = emfactory.createEntityManager();
-
-//        try {
-        // load driver
-//            Class.forName("org.h2.Driver");
-//            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-//        } catch (ClassNotFoundException e) {
-//
-//        }
     }
 
     @Override
@@ -34,16 +25,20 @@ public class DataAccessImpl implements DataAccess {
 
         try {
             entityManager.getTransaction().begin();
-//            baseData = entityManager.find(BaseData.class, baseData.getId());
             baseData = entityManager.find(BaseData.class, 1);
 //            List<BaseData> BaseDatas = entityManager.createQuery("from BaseData").getResultList();
-//            System.out.println(BaseDatas.toString());
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
         }
 
-        return (baseData != null) ? baseData : new BaseData();
+        // TODO: Could be tricky, as soon as baseData is null, everything gets overwritten in DB.
+        if (baseData == null) {
+            baseData = new BaseData();
+            save(baseData);
+        }
+
+        return baseData;
     }
 
     /**
@@ -65,22 +60,6 @@ public class DataAccessImpl implements DataAccess {
 
         return timeTrackerEntity;
     }
-
-    public void listBaseData() {
-        try {
-            entityManager.getTransaction().begin();
-            @SuppressWarnings("unchecked")
-            List<BaseData> BaseDatas = entityManager.createQuery("from BaseData").getResultList();
-            for (Iterator<BaseData> iterator = BaseDatas.iterator(); iterator.hasNext(); ) {
-                BaseData baseData = (BaseData) iterator.next();
-//                System.out.println(baseData.getBaseDataName());
-            }
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
-
 
 }
 

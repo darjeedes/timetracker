@@ -7,7 +7,9 @@ import com.darjeedes.timetracker.views.BaseController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 
 public class MainController extends BaseController {
 
@@ -16,6 +18,15 @@ public class MainController extends BaseController {
 
     @FXML
     private ListView<Issue> LI_Issues;
+
+    @FXML
+    private Label LB_ContextName;
+
+    @FXML
+    private Label LB_IssueName;
+
+    @FXML
+    private TextArea TA_IssueNotes;
 
     public void addContext() {
         this.getDataService().addContext();
@@ -30,25 +41,32 @@ public class MainController extends BaseController {
     }
 
     public void loadContext() {
-        updateIssueComboBox();
+        Context selectedContext = this.CB_Contexts.getValue();
+
+        if (selectedContext != null) {
+            this.getDataService().setCurrentContext(selectedContext);
+            this.LB_ContextName.setText(selectedContext.toString());
+        }
+
+        LI_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
+    }
+
+    public void loadIssue() {
+        Issue selectedIssue = LI_Issues.getSelectionModel().getSelectedItem();
+
+        if (selectedIssue != null) {
+            this.getDataService().setCurrentIssue(selectedIssue);
+            this.LB_IssueName.setText(selectedIssue.toString());
+            this.TA_IssueNotes.setText(selectedIssue.getNotes());
+        }
+
     }
 
     public void updateContextComboBox() {
         this.CB_Contexts.setItems(FXCollections.observableList(this.getDataService().getContexts()));
     }
 
-    public void updateIssueComboBox() {
-        if (CB_Contexts.getValue() != null) {
-            this.getDataService().setCurrentContext(CB_Contexts.getValue());
-            LI_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
-        }
-    }
-
-    public void updateCurrentIssue() {
-        this.getDataService().setCurrentIssue(LI_Issues.getSelectionModel().getSelectedItem());
-    }
-
-    private void switchToIssueScene() {
+    public void switchToIssueScene() {
         this.getSceneManager().switchToIssueScene();
     }
 

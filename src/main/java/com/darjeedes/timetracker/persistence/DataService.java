@@ -1,6 +1,6 @@
 package com.darjeedes.timetracker.persistence;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.darjeedes.timetracker.domain.BaseData;
@@ -47,7 +47,7 @@ public class DataService {
         if (this.baseData != null) {
             return this.baseData.getContexts();
         } else {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
     }
 
@@ -55,7 +55,7 @@ public class DataService {
         if (this.currentContext != null) {
             return this.currentContext.getIssues();
         } else {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
     }
 

@@ -6,19 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darjeedes.timetracker.views.issue.IssueController">
    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
       <children>
          <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-               <Label text="Label" />
-               <TextField fx:id="TB_title" />
+               <Label text="Titel" />
+               <TextField fx:id="TB_Title" />
             </children>
          </HBox>
          <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
             
-            	<Button onAction="#saveAndExit"> </Button>
+            	<Button onAction="#saveAndExit" text="Save and Exit"> </Button>
             </children>
          </HBox>
       </children>

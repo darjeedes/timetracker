@@ -7,17 +7,16 @@
 		<class>com.darjeedes.timetracker.domain.Issue</class>
 		<class>com.darjeedes.timetracker.domain.TimeEntry</class>
 		<properties>
-<!--			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>-->
-<!--			<property name="javax.persistence.jdbc.url" value="jdbc:derby:derbyDB"/>-->
 			<property name="show_sql" value="true"/>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:./timetracker-data"/>
 			<property name="javax.persistence.jdbc.user" value="ttr"/>
 			<property name="javax.persistence.jdbc.password" value="few90hu83"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-<!--			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>-->
-			<property name="hibernate.hbm2ddl.auto" value="validate"/>
 			<property name="hibernate.HBM2DLL_CREATE_SCHEMAS" value="false"/>
+
+<!--TODO: Automatize this process: Set hibernate.hbm2ddl.auto to create for initial db setup, validate, as soon as the db has been created. -->
+			<property name="hibernate.hbm2ddl.auto" value="validate"/>
 		</properties>
 	</persistence-unit>
 </persistence>

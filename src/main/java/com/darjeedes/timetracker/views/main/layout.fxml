@@ -6,9 +6,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,9 +16,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 <GridPane hgap="10.0" minHeight="600.0" minWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darjeedes.timetracker.views.main.MainController">
-	<VBox>
-		<children>
+   <VBox prefHeight="200.0" prefWidth="100.0">
+      <children>
          <HBox>
             <children>
                <Label text="Kontext / Projekt:" />
@@ -27,6 +29,34 @@
          </HBox>
 
 			<ComboBox fx:id="CB_Contexts" onAction="#loadContext" onShowing="#updateContextComboBox" />
+      </children>
+   </VBox>
+   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+      <children>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Label fx:id="LB_ContextName" text="Label">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font>
+               </Label>
+               <Button fx:id="BT_EditContext" mnemonicParsing="false" text="Edit..." />
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Label fx:id="LB_IssueName" text="Label">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font>
+               </Label>
+               <Button fx:id="BT_EditIssue" mnemonicParsing="false" onAction="#switchToIssueScene" text="Edit..." />
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+	<VBox GridPane.rowIndex="1">
+		<children>
          <HBox layoutX="10.0" layoutY="10.0">
             <children>
                <Label text="Vorgänge:" />
@@ -34,10 +64,10 @@
                <Button mnemonicParsing="false" text="Start" />
             </children>
          </HBox>
-         <ListView fx:id="LI_Issues" onMouseClicked="#updateCurrentIssue" prefHeight="470.0" prefWidth="300.0" />
+         <ListView fx:id="LI_Issues" onMouseClicked="#loadIssue" prefHeight="470.0" prefWidth="300.0" />
 		</children>
 	</VBox>
-   <VBox GridPane.columnIndex="1">
+   <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
       <children>
          <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
            <tabs>
@@ -45,7 +75,7 @@
                <content>
                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
                         <children>
-                           <TextArea AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                           <TextArea fx:id="TA_IssueNotes" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         </children>
                      </AnchorPane>
                </content>
@@ -77,7 +107,8 @@
 		<ColumnConstraints percentWidth="65.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints percentHeight="100.0" />
+      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" />
+		<RowConstraints percentHeight="90.0" />
 		<RowConstraints />
 	</rowConstraints>
 	<padding>

@@ -1,5 +1,6 @@
 package com.darjeedes.timetracker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -52,7 +53,7 @@ public class Context extends TimeTrackerEntity {
     }
 
     public List<Issue> getIssues() {
-        return issues;
+        return issues == null ? new ArrayList<>() : issues;
     }
 
     public void setIssues(final List<Issue> issues) {
@@ -63,4 +64,5 @@ public class Context extends TimeTrackerEntity {
     public String toString() {
         return this.name;
     }
+
 }
