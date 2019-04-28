@@ -1,6 +1,5 @@
 package com.darjeedes.timetracker.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -35,6 +34,22 @@ public class Context extends TimeTrackerEntity {
      */
     @OneToMany
     private List<Issue> issues;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(final String tag) {
+        this.tag = tag;
+    }
 
     public List<Issue> getIssues() {
         return issues;

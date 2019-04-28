@@ -37,4 +37,40 @@ public class Issue extends TimeTrackerEntity {
     @OneToMany
     private List<TimeEntry> timeEntries;
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(final int number) {
+        this.number = number;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(final String notes) {
+        this.notes = notes;
+    }
+
+    public List<TimeEntry> getTimeEntries() {
+        return timeEntries;
+    }
+
+    public void setTimeEntries(final List<TimeEntry> timeEntries) {
+        this.timeEntries = timeEntries;
+    }
+
+    @Override
+    public String toString() {
+        return this.number + ": " + this.title;
+    }
 }

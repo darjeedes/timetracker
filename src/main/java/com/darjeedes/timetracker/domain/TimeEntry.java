@@ -19,4 +19,28 @@ public class TimeEntry extends TimeTrackerEntity {
 
     private LocalDateTime endTime;
 
+    public TimeEntry start() {
+        this.startTime = LocalDateTime.now();
+        return this;
+    }
+
+    public void stop() {
+        this.endTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(final LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(final LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }
