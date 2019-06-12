@@ -8,6 +8,11 @@ public class BaseController {
     private DataService dataService;
     private SceneManager sceneManager;
 
+    /**
+     * This method shall be used to initialize e.g. values in the view, before it gets displayed.
+     */
+    public void initializeView() {}
+
     public DataService getDataService() {
         return dataService;
     }

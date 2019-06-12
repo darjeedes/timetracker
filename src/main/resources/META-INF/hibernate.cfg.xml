@@ -4,7 +4,7 @@
 <!--		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">-->
 <hibernate-configuration>
 	<session-factory>
-		<property name="connection.url">jdbc:h2:mem:test</property>
+		<property name="connection.url">jdbc:h2:./timetracker</property>
 		<property name="dialect">org.hibernate.dialect.H2Dialect</property>
 
 		<mapping class="com.darjeedes.timetracker.domain.BaseData" />

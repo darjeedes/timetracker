@@ -29,7 +29,7 @@ public class SceneManager {
             this.issueScene = createScene(VIEWS_BASE_PATH + "/issue/layout.fxml", dataService);
         } catch (IOException ex) {
             // TODO: Log error or at least display it. Shouldn't ever occur as long as the app files have integrity.
-            // TODO: Don't exit from here, it's ugly.
+            // TODO: Don't exit from here, as it's ugly.
             System.exit(-1);
         }
     }

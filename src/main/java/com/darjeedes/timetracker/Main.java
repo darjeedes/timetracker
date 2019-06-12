@@ -12,6 +12,8 @@ public class Main extends Application {
         SceneManager sceneManager = new SceneManager(primaryStage);
         sceneManager.switchToMainScene();
 
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
         primaryStage.setTitle("Hello World");
         primaryStage.show();
     }

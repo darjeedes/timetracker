@@ -34,6 +34,7 @@ public class MainController extends BaseController {
 
     public void addIssue() {
         this.getDataService().addIssue();
+        updateIssueList();
     }
 
     public void saveContext() {
@@ -48,7 +49,7 @@ public class MainController extends BaseController {
             this.LB_ContextName.setText(selectedContext.toString());
         }
 
-        LI_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
+        updateIssueList();
     }
 
     public void loadIssue() {
@@ -64,6 +65,10 @@ public class MainController extends BaseController {
 
     public void updateContextComboBox() {
         this.CB_Contexts.setItems(FXCollections.observableList(this.getDataService().getContexts()));
+    }
+
+    public void updateIssueList() {
+        LI_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
     }
 
     public void switchToIssueScene() {

@@ -9,18 +9,15 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 
-public class SchemaGenerator {
+public class DBGenerator {
 
-    public static void createSchema() {
+    public static void createDatabase() {
         StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder() //
                 .configure("META-INF/hibernate.cfg.xml") //
                 .build();
-        Metadata metadata = new MetadataSources(serviceRegistry) //
-                .buildMetadata();
+        Metadata metadata = new MetadataSources(serviceRegistry).buildMetadata();
 
-        new SchemaExport() //
-                .setOutputFile("db-schema.hibernate5.ddl") //
-                .create(EnumSet.of(TargetType.SCRIPT), metadata);
+        new SchemaExport().create(EnumSet.of(TargetType.DATABASE), metadata);
 
         metadata.buildSessionFactory().close();
     }

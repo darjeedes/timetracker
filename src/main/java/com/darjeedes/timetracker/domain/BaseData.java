@@ -42,4 +42,5 @@ public class BaseData extends TimeTrackerEntity {
     public void setContexts(final List<Context> contexts) {
         this.contexts = contexts;
     }
+
 }

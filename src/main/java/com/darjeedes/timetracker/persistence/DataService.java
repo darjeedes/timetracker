@@ -1,5 +1,6 @@
 package com.darjeedes.timetracker.persistence;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,11 @@ public class DataService {
 
     public DataService() {
         this.dataAccess = new DataAccessImpl();
-        this.baseData = dataAccess.getBaseData();
+        try {
+            this.baseData = dataAccess.getBaseData();
+        } catch (IOException e) {
+
+        }
     }
 
     public void addContext() {

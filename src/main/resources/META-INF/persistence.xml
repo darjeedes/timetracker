@@ -1,7 +1,7 @@
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 			 version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
-	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="timetracker-persistence-unit" transaction-type="RESOURCE_LOCAL">
 		<class>com.darjeedes.timetracker.domain.BaseData</class>
 		<class>com.darjeedes.timetracker.domain.Context</class>
 		<class>com.darjeedes.timetracker.domain.Issue</class>
@@ -9,14 +9,11 @@
 		<properties>
 			<property name="show_sql" value="true"/>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:./timetracker-data"/>
-			<property name="javax.persistence.jdbc.user" value="ttr"/>
-			<property name="javax.persistence.jdbc.password" value="few90hu83"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:./timetracker"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.HBM2DLL_CREATE_SCHEMAS" value="false"/>
 
-<!--TODO: Automatize this process: Set hibernate.hbm2ddl.auto to create for initial db setup, validate, as soon as the db has been created. -->
-			<property name="hibernate.hbm2ddl.auto" value="validate"/>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
 		</properties>
 	</persistence-unit>
 </persistence>
