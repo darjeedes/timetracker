@@ -11,6 +11,13 @@ import org.hibernate.tool.schema.TargetType;
 
 public class DBGenerator {
 
+    /**
+     * Looks up configuration in hibernate.cfg.xml and creates a usable database by processing annotations from code.
+     * Not needed at the moment, because hibernate creates a database if it doesn't find one. Will be useful later,
+     * when we allow the user to create, save and load *.db files manually.
+     * <br>
+     * Attention: If you run this, e.g. from DBGeneratorRunner, <bold>you will overwrite the existing database</bold>.
+     */
     public static void createDatabase() {
         StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder() //
                 .configure("META-INF/hibernate.cfg.xml") //

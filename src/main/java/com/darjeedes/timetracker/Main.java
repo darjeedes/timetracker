@@ -9,10 +9,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
         SceneManager sceneManager = new SceneManager(primaryStage);
         sceneManager.switchToMainScene();
-
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         primaryStage.setTitle("Hello World");
         primaryStage.show();
