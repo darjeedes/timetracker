@@ -23,7 +23,7 @@ public class Context extends TimeTrackerEntity {
     /**
      * The display name of the context.
      */
-    private String name = "context123";
+    private String name = "New Context";
 
     /**
      * The JIRA-Tag of the context.
@@ -35,6 +35,10 @@ public class Context extends TimeTrackerEntity {
      */
     @OneToMany
     private List<Issue> issues;
+
+    public Context() {
+        this.issues = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
@@ -53,7 +57,7 @@ public class Context extends TimeTrackerEntity {
     }
 
     public List<Issue> getIssues() {
-        return issues == null ? new ArrayList<>() : issues;
+        return this.issues;
     }
 
     public void setIssues(final List<Issue> issues) {
