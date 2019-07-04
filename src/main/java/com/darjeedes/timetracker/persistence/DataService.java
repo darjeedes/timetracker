@@ -7,7 +7,13 @@ import java.util.List;
 import com.darjeedes.timetracker.domain.BaseData;
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
+import com.darjeedes.timetracker.domain.TimeTrackerEntity;
+import com.darjeedes.timetracker.persistence.low.DataAccess;
+import com.darjeedes.timetracker.persistence.low.DataAccessImpl;
 
+/**
+ * Service that provides methods for data access.
+ */
 public class DataService {
 
     private DataAccess dataAccess;
@@ -20,7 +26,7 @@ public class DataService {
         try {
             this.baseData = dataAccess.getBaseData();
         } catch (IOException e) {
-
+            throw new RuntimeException("Could not read from db.");
         }
     }
 

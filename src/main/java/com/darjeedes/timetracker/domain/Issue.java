@@ -3,18 +3,10 @@ package com.darjeedes.timetracker.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
 
 @Entity
 public class Issue extends TimeTrackerEntity {
-
-    @Id
-    @GeneratedValue
-    private int id;
 
     /**
      * The issue number the issue has in the issue management system.

@@ -4,21 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import com.darjeedes.timetracker.persistence.TimeTrackerEntity;
 
 /**
  * Represents the context of the work being done, i.e. the project that is being worked on.
  */
 @Entity
 public class Context extends TimeTrackerEntity {
-
-    @Id
-    @GeneratedValue
-    private int id;
 
     /**
      * The display name of the context.

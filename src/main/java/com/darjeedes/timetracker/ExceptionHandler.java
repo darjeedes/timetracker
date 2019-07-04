@@ -23,6 +23,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         // TODO: Log the Exception and the whole stack trace. Implement logging to file. Careful: expected exception
         //  may be wrapped in another exception (InvocationTargetException).
         LOGGER.log(Level.SEVERE, e.getMessage());
+        e.printStackTrace();
         new Alert(Alert.AlertType.ERROR, "Sorry, but something went wrong. (" + e.getMessage() + ")").show();
     }
 

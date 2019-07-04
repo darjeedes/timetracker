@@ -1,10 +1,11 @@
-package com.darjeedes.timetracker.persistence;
+package com.darjeedes.timetracker.persistence.low;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.darjeedes.timetracker.domain.BaseData;
+import com.darjeedes.timetracker.domain.TimeTrackerEntity;
 
 public class DataAccessImpl implements DataAccess {
 
