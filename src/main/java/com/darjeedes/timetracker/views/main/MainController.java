@@ -1,23 +1,29 @@
 package com.darjeedes.timetracker.views.main;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
 import com.darjeedes.timetracker.views.BaseController;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MainController extends BaseController {
+public class MainController extends BaseController implements Initializable {
 
     @FXML
     private ComboBox<Context> CB_Contexts;
 
     @FXML
-    private ListView<Issue> LI_Issues;
+    private TableView<Issue> TV_Issues;
 
     @FXML
     private Label LB_ContextName;
@@ -27,6 +33,17 @@ public class MainController extends BaseController {
 
     @FXML
     private TextArea TA_IssueNotes;
+
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        TableColumn<Issue, Boolean> statusColumn = new TableColumn("Status");
+        statusColumn.setCellValueFactory(new PropertyValueFactory("running"));
+
+        TableColumn<Issue, String> titleColumn = new TableColumn("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
+
+        this.TV_Issues.getColumns().addAll(statusColumn, titleColumn);
+    }
 
     public void addContext() {
         this.getDataService().addContext();
@@ -53,7 +70,7 @@ public class MainController extends BaseController {
     }
 
     public void loadIssue() {
-        Issue selectedIssue = LI_Issues.getSelectionModel().getSelectedItem();
+        Issue selectedIssue = TV_Issues.getSelectionModel().getSelectedItem();
 
         if (selectedIssue != null) {
             this.getDataService().setCurrentIssue(selectedIssue);
@@ -68,7 +85,7 @@ public class MainController extends BaseController {
     }
 
     public void updateIssueList() {
-        LI_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
+        this.TV_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
     }
 
     public void switchToIssueScene() {

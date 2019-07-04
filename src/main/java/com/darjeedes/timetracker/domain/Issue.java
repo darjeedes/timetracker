@@ -24,6 +24,11 @@ public class Issue extends TimeTrackerEntity {
     private String notes;
 
     /**
+     * If this issue is being time-tracked at the moment.
+     */
+    private boolean running = false;
+
+    /**
      * The list of time entries that represent the work time.
      */
     @OneToMany
@@ -59,6 +64,14 @@ public class Issue extends TimeTrackerEntity {
 
     public void setTimeEntries(final List<TimeEntry> timeEntries) {
         this.timeEntries = timeEntries;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(final boolean running) {
+        this.running = running;
     }
 
     @Override
