@@ -29,9 +29,6 @@ public class MainController extends BaseController implements Initializable {
     private TableView<Issue> TV_Issues;
 
     @FXML
-    private Label LB_ContextName;
-
-    @FXML
     private Label LB_IssueName;
 
     @FXML
@@ -92,7 +89,6 @@ public class MainController extends BaseController implements Initializable {
 
         if (selectedContext != null) {
             this.getDataService().setCurrentContext(selectedContext);
-            this.LB_ContextName.setText(selectedContext.toString());
         }
 
         refreshIssueList();
@@ -103,7 +99,9 @@ public class MainController extends BaseController implements Initializable {
 
         if (selectedIssue != null) {
             this.getDataService().setCurrentIssue(selectedIssue);
-            this.LB_IssueName.setText(selectedIssue.toString());
+            this.LB_IssueName.setText(
+                    getDataService().getCurrentContext().getTag() + "-" + selectedIssue.getNumber() + ": "
+                            + selectedIssue.getTitle());
             this.TA_IssueNotes.setText(selectedIssue.getNotes());
         }
 
