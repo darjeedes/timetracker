@@ -20,46 +20,35 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane hgap="10.0" minHeight="600.0" minWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darjeedes.timetracker.views.main.MainController">
-   <VBox prefHeight="200.0" prefWidth="100.0">
+   <VBox>
       <children>
          <HBox>
             <children>
-               <Label text="Kontext / Projekt:" />
+               <Label text="Kontext / Projekt:">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Label>
                <Button fx:id="BT_AddContext" mnemonicParsing="false" onAction="#addContext" text="+" />
                <Button mnemonicParsing="false" text="edit" textFill="RED" />
                <Button mnemonicParsing="false" onAction="#deleteCurrentContext" text="-" />
             </children>
          </HBox>
-         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <AnchorPane>
             <children>
       
-      			<ComboBox fx:id="CB_Contexts" onAction="#loadContext" onShowing="#refreshContextComboBox" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+      			<ComboBox fx:id="CB_Contexts" onAction="#loadContext" onShowing="#refreshContextComboBox" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
             </children>
          </AnchorPane>
-      </children>
-   </VBox>
-   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-      <children>
          <AnchorPane>
             <children>
-               <Label fx:id="LB_IssueName" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0">
+               <Label text="Vorgänge:">
                   <font>
                      <Font name="System Bold" size="12.0" />
-                  </font>
-               </Label>
+                  </font></Label>
+               <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#addIssue" text="+" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" />
             </children>
          </AnchorPane>
-      </children>
-   </VBox>
-	<VBox GridPane.rowIndex="1">
-		<children>
-         <AnchorPane>
-            <children>
-               <Label text="Vorgänge:" />
-               <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#addIssue" text="+" AnchorPane.rightAnchor="0.0" />
-            </children>
-         </AnchorPane>
-         <HBox layoutX="10.0" layoutY="10.0" />
+         <HBox />
          <TableView fx:id="TV_Issues" onMouseClicked="#loadIssue" prefWidth="270.0" VBox.vgrow="ALWAYS">
             <contextMenu>
                <ContextMenu>
@@ -70,10 +59,19 @@
                  </items>
                </ContextMenu>
             </contextMenu></TableView>
-		</children>
-	</VBox>
-   <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+      </children>
+   </VBox>
+   <VBox GridPane.columnIndex="1">
       <children>
+         <AnchorPane>
+            <children>
+               <Label fx:id="LB_IssueName" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
          <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
            <tabs>
              <Tab text="Notizen">
@@ -83,7 +81,8 @@
                            <TextArea fx:id="TA_IssueNotes" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                               <font>
                                  <Font name="Consolas" size="12.0" />
-                              </font></TextArea>
+                              </font>
+                           </TextArea>
                         </children>
                      </AnchorPane>
                </content>
@@ -115,8 +114,7 @@
 		<ColumnConstraints percentWidth="65.0" />
 	</columnConstraints>
 	<rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="60.0" minHeight="10.0" prefHeight="60.0" />
-		<RowConstraints vgrow="ALWAYS" />
+      <RowConstraints percentHeight="100.0" vgrow="ALWAYS" />
 		<RowConstraints />
 	</rowConstraints>
 	<padding>
