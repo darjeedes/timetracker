@@ -9,6 +9,9 @@ public interface DataAccess {
 
     BaseData getBaseData() throws IOException;
 
-    void save(TimeTrackerEntity timeTrackerEntity) throws RuntimeException;
+    void save(TimeTrackerEntity timeTrackerEntity);
 
+    void update(TimeTrackerEntity timeTrackerEntity);
+
+    void delete(TimeTrackerEntity timeTrackerEntity);
 }

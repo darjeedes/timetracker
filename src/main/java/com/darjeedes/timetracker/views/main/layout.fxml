@@ -3,11 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,6 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <GridPane hgap="10.0" minHeight="600.0" minWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.darjeedes.timetracker.views.main.MainController">
    <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
@@ -23,10 +26,16 @@
             <children>
                <Label text="Kontext / Projekt:" />
                <Button fx:id="BT_AddContext" mnemonicParsing="false" onAction="#addContext" text="+" />
+               <Button mnemonicParsing="false" text="edit" textFill="RED" />
+               <Button mnemonicParsing="false" onAction="#deleteCurrentContext" text="-" />
             </children>
          </HBox>
-
-			<ComboBox fx:id="CB_Contexts" onAction="#loadContext" onShowing="#updateContextComboBox" />
+         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+      
+      			<ComboBox fx:id="CB_Contexts" onAction="#loadContext" onShowing="#refreshContextComboBox" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+            </children>
+         </AnchorPane>
       </children>
    </VBox>
    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
@@ -34,11 +43,10 @@
          <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
                <Label fx:id="LB_ContextName" text="Label">
-                  <font>
-                     <Font name="System Bold" size="12.0" />
-                  </font>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
                </Label>
-               <Button fx:id="BT_EditContext" mnemonicParsing="false" text="Edit..." />
             </children>
          </HBox>
          <HBox prefHeight="100.0" prefWidth="200.0">
@@ -48,21 +56,27 @@
                      <Font name="System Bold" size="12.0" />
                   </font>
                </Label>
-               <Button fx:id="BT_EditIssue" mnemonicParsing="false" onAction="#switchToIssueScene" text="Edit..." />
             </children>
          </HBox>
       </children>
    </VBox>
 	<VBox GridPane.rowIndex="1">
 		<children>
-         <HBox layoutX="10.0" layoutY="10.0">
+         <AnchorPane>
             <children>
                <Label text="Vorgänge:" />
-               <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#addIssue" text="+" />
-               <Button mnemonicParsing="false" text="Start" />
+               <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#addIssue" text="+" AnchorPane.rightAnchor="0.0" />
             </children>
-         </HBox>
-         <TableView fx:id="TV_Issues" prefWidth="270.0" VBox.vgrow="ALWAYS" onMouseClicked="#loadIssue"/>
+         </AnchorPane>
+         <HBox layoutX="10.0" layoutY="10.0" />
+         <TableView fx:id="TV_Issues" onMouseClicked="#loadIssue" prefWidth="270.0" VBox.vgrow="ALWAYS">
+            <contextMenu>
+               <ContextMenu>
+                 <items>
+                   <MenuItem mnemonicParsing="false" onAction="#deleteCurrentIssue" text="Delete" />
+                 </items>
+               </ContextMenu>
+            </contextMenu></TableView>
 		</children>
 	</VBox>
    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">

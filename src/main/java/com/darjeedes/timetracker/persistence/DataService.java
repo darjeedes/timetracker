@@ -24,7 +24,7 @@ public class DataService {
     public DataService() {
         this.dataAccess = new DataAccessImpl();
         try {
-            this.baseData = dataAccess.getBaseData();
+            this.baseData = this.dataAccess.getBaseData();
         } catch (IOException e) {
             throw new RuntimeException("Could not read from db.");
         }
@@ -32,8 +32,18 @@ public class DataService {
 
     public void addContext() {
         Context contextToAdd = new Context();
-        baseData.getContexts().add(contextToAdd);
+        this.baseData.getContexts().add(contextToAdd);
         save(contextToAdd);
+    }
+
+    public void addContext(final Context contextToAdd) {
+        this.baseData.getContexts().add(contextToAdd);
+        save(contextToAdd);
+    }
+
+    public void deleteContext(final Context contextToDelete) {
+        this.baseData.getContexts().remove(contextToDelete);
+        delete(contextToDelete);
     }
 
     public void addIssue() {
@@ -42,8 +52,22 @@ public class DataService {
         save(issueToAdd);
     }
 
-    public void save(TimeTrackerEntity timeTrackerEntity) {
+    public void addIssue(final Issue issueToAdd) {
+        this.currentContext.getIssues().add(issueToAdd);
+        save(issueToAdd);
+    }
+
+    public void deleteIssue(final Issue issueToDelete) {
+        this.currentContext.getIssues().remove(issueToDelete);
+        delete(issueToDelete);
+    }
+
+    private void save(TimeTrackerEntity timeTrackerEntity) {
         this.dataAccess.save(timeTrackerEntity);
+    }
+
+    private void delete(TimeTrackerEntity timeTrackerEntity) {
+        this.dataAccess.delete(timeTrackerEntity);
     }
 
     public void saveCurrentContext() {
@@ -71,11 +95,13 @@ public class DataService {
     }
 
     public Context getCurrentContext() {
-        return currentContext;
+        // TODO: Remove class variable and rely on contextcombobox
+        return this.currentContext;
     }
 
     public Issue getCurrentIssue() {
-        return currentIssue;
+        // TODO: Remove class variable and rely on issuelist
+        return this.currentIssue;
     }
 
     public void setCurrentIssue(final Issue currentIssue) {

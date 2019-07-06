@@ -19,7 +19,7 @@ public class DataAccessImpl implements DataAccess {
 
     @Override
     public BaseData getBaseData() {
-        BaseData baseData = entityManager.find(BaseData.class, 1);
+        BaseData baseData = this.entityManager.find(BaseData.class, 1);
 
         if (baseData == null) {
             // TODO: Make a backup of original .db file first.
@@ -34,17 +34,45 @@ public class DataAccessImpl implements DataAccess {
      *
      * @param timeTrackerEntity the entity to be saved
      */
-    public void save(TimeTrackerEntity timeTrackerEntity) throws RuntimeException {
+    public void save(TimeTrackerEntity timeTrackerEntity) {
 
         try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(timeTrackerEntity);
+            this.entityManager.getTransaction().begin();
+            this.entityManager.persist(timeTrackerEntity);
 
-            entityManager.getTransaction().commit();
+            this.entityManager.getTransaction().commit();
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            this.entityManager.getTransaction().rollback();
             throw new RuntimeException(
                     "Could not persist object of type `" + timeTrackerEntity.getClass().getName() + "`.");
+        }
+    }
+
+    @Override
+    public void update(final TimeTrackerEntity timeTrackerEntity) {
+        try {
+            this.entityManager.getTransaction().begin();
+            this.entityManager.persist(timeTrackerEntity);
+
+            this.entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            this.entityManager.getTransaction().rollback();
+            throw new RuntimeException(
+                    "Could not persist object of type `" + timeTrackerEntity.getClass().getName() + "`.");
+        }
+    }
+
+    @Override
+    public void delete(final TimeTrackerEntity timeTrackerEntity) {
+        try {
+            this.entityManager.getTransaction().begin();
+            this.entityManager.remove(timeTrackerEntity);
+
+            this.entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            this.entityManager.getTransaction().rollback();
+            throw new RuntimeException(
+                    "Could not remove object of type `" + timeTrackerEntity.getClass().getName() + "`.");
         }
     }
 

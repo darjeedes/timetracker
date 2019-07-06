@@ -6,6 +6,9 @@ import java.util.ResourceBundle;
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
 import com.darjeedes.timetracker.views.BaseController;
+import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
+import com.darjeedes.timetracker.views.formwindow.context.CreateContext;
+import com.darjeedes.timetracker.views.formwindow.issue.CreateIssue;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -46,12 +49,38 @@ public class MainController extends BaseController implements Initializable {
     }
 
     public void addContext() {
-        this.getDataService().addContext();
+        Context contextToAdd = new CreateContext().displayForm();
+        if (contextToAdd != null) {
+            this.getDataService().addContext(contextToAdd);
+        }
+    }
+
+    public void deleteCurrentContext() {
+        Context contextToDelete = this.CB_Contexts.getValue();
+        if (contextToDelete != null) {
+            if (new ConfirmDialog().show("Do you really want to delete " + contextToDelete.getName() + "?")) {
+                getDataService().deleteContext(contextToDelete);
+                refreshContextComboBox();
+            }
+        }
     }
 
     public void addIssue() {
-        this.getDataService().addIssue();
-        updateIssueList();
+        Issue issueToAdd = new CreateIssue().displayForm();
+        if (issueToAdd != null) {
+            this.getDataService().addIssue(issueToAdd);
+            refreshIssueList();
+        }
+    }
+
+    public void deleteCurrentIssue() {
+        Issue issueToDelete = this.TV_Issues.getSelectionModel().getSelectedItem();
+        if (issueToDelete != null) {
+            if (new ConfirmDialog().show("Do you really want to delete " + issueToDelete.getTitle() + "?")) {
+                getDataService().deleteIssue(issueToDelete);
+                refreshIssueList();
+            }
+        }
     }
 
     public void saveContext() {
@@ -66,11 +95,11 @@ public class MainController extends BaseController implements Initializable {
             this.LB_ContextName.setText(selectedContext.toString());
         }
 
-        updateIssueList();
+        refreshIssueList();
     }
 
     public void loadIssue() {
-        Issue selectedIssue = TV_Issues.getSelectionModel().getSelectedItem();
+        Issue selectedIssue = this.TV_Issues.getSelectionModel().getSelectedItem();
 
         if (selectedIssue != null) {
             this.getDataService().setCurrentIssue(selectedIssue);
@@ -80,16 +109,12 @@ public class MainController extends BaseController implements Initializable {
 
     }
 
-    public void updateContextComboBox() {
+    public void refreshContextComboBox() {
         this.CB_Contexts.setItems(FXCollections.observableList(this.getDataService().getContexts()));
     }
 
-    public void updateIssueList() {
+    public void refreshIssueList() {
         this.TV_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
-    }
-
-    public void switchToIssueScene() {
-        this.getSceneManager().switchToIssueScene();
     }
 
 }
