@@ -21,18 +21,11 @@ public class TimeEntry extends TimeTrackerEntity {
     }
 
     public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(final LocalDateTime startTime) {
-        this.startTime = startTime;
+        return this.startTime;
     }
 
     public LocalDateTime getEndTime() {
-        return endTime;
+        return this.endTime;
     }
 
-    public void setEndTime(final LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
 }

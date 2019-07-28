@@ -1,9 +1,11 @@
 package com.darjeedes.timetracker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Issue extends TimeTrackerEntity {
@@ -23,10 +25,8 @@ public class Issue extends TimeTrackerEntity {
      */
     private String notes;
 
-    /**
-     * If this issue is being time-tracked at the moment.
-     */
-    private boolean running = false;
+    @Transient
+    private TimeEntry currentTimeEntry;
 
     /**
      * The list of time entries that represent the work time.
@@ -34,8 +34,12 @@ public class Issue extends TimeTrackerEntity {
     @OneToMany
     private List<TimeEntry> timeEntries;
 
+    public Issue() {
+        this.timeEntries = new ArrayList<>();
+    }
+
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setNumber(final int number) {
@@ -43,7 +47,7 @@ public class Issue extends TimeTrackerEntity {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(final String title) {
@@ -51,7 +55,7 @@ public class Issue extends TimeTrackerEntity {
     }
 
     public String getNotes() {
-        return notes;
+        return this.notes;
     }
 
     public void setNotes(final String notes) {
@@ -59,23 +63,31 @@ public class Issue extends TimeTrackerEntity {
     }
 
     public List<TimeEntry> getTimeEntries() {
-        return timeEntries;
+        return this.timeEntries;
     }
 
     public void setTimeEntries(final List<TimeEntry> timeEntries) {
         this.timeEntries = timeEntries;
     }
 
-    public boolean isRunning() {
-        return running;
+    public void startTimer() {
+        if (this.currentTimeEntry == null) {
+            TimeEntry timeEntry = new TimeEntry().start();
+            this.timeEntries.add(timeEntry);
+            this.currentTimeEntry = timeEntry;
+        }
     }
 
-    public void setRunning(final boolean running) {
-        this.running = running;
+    public void stopTimer() {
+        if (this.currentTimeEntry != null) {
+            this.currentTimeEntry.stop();
+            this.currentTimeEntry = null;
+        }
     }
 
     @Override
     public String toString() {
         return this.number + ": " + this.title;
     }
+
 }

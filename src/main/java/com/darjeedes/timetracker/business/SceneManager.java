@@ -30,6 +30,7 @@ public class SceneManager {
         } catch (IOException ex) {
             // TODO: Log error or at least display it. Shouldn't ever occur as long as the app files have integrity.
             // TODO: Don't exit from here, as it's ugly.
+            ex.printStackTrace();
             System.exit(-1);
         }
     }

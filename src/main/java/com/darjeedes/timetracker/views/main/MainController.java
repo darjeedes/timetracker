@@ -1,10 +1,13 @@
 package com.darjeedes.timetracker.views.main;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
+import com.darjeedes.timetracker.domain.TimeEntry;
 import com.darjeedes.timetracker.views.BaseController;
 import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
 import com.darjeedes.timetracker.views.formwindow.context.CreateContext;
@@ -29,6 +32,9 @@ public class MainController extends BaseController implements Initializable {
     private TableView<Issue> TV_Issues;
 
     @FXML
+    private TableView<TimeEntry> TV_TimeEntries;
+
+    @FXML
     private Label LB_IssueName;
 
     @FXML
@@ -42,7 +48,20 @@ public class MainController extends BaseController implements Initializable {
         TableColumn<Issue, String> titleColumn = new TableColumn("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
 
+        statusColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.25));
+        titleColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.75));
+
         this.TV_Issues.getColumns().addAll(statusColumn, titleColumn);
+
+
+        TableColumn<TimeEntry, Integer> kwColumn = new TableColumn<>("KW");
+        TableColumn<TimeEntry, LocalDate> startDateColumn = new TableColumn<>("Date");
+        TableColumn<TimeEntry, LocalTime> startTimeColumn = new TableColumn<>("Start");
+        TableColumn<TimeEntry, LocalTime> stopTimeColumn = new TableColumn<>("Stop");
+        TableColumn<TimeEntry, LocalTime> durationColumn = new TableColumn<>("Duration");
+        TableColumn<TimeEntry, LocalTime> descriptionColumn = new TableColumn<>("Description");
+
+        startDateColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
     }
 
     public void addContext() {
@@ -89,9 +108,8 @@ public class MainController extends BaseController implements Initializable {
 
         if (selectedContext != null) {
             this.getDataService().setCurrentContext(selectedContext);
+            refreshIssueList();
         }
-
-        refreshIssueList();
     }
 
     public void loadIssue() {
@@ -99,10 +117,14 @@ public class MainController extends BaseController implements Initializable {
 
         if (selectedIssue != null) {
             this.getDataService().setCurrentIssue(selectedIssue);
+
+            // TODO: ManyToOne Context als parent in issue, dann issue.getContext nutzen
             this.LB_IssueName.setText(
                     getDataService().getCurrentContext().getTag() + "-" + selectedIssue.getNumber() + ": "
                             + selectedIssue.getTitle());
             this.TA_IssueNotes.setText(selectedIssue.getNotes());
+
+            refreshTimeEntryList();
         }
 
     }
@@ -113,6 +135,23 @@ public class MainController extends BaseController implements Initializable {
 
     public void refreshIssueList() {
         this.TV_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
+    }
+
+    public void refreshTimeEntryList() {
+        this.TV_TimeEntries.setItems(FXCollections.observableList(this.getDataService().getCurrentIssue().getTimeEntries()));
+    }
+
+    public void startTracking() {
+
+    }
+
+    /**
+     * Retrieves the current context by accessing the selected item of the ComboBox UI-Element.
+     *
+     * @return the current context or null, if none selected.
+     */
+    private Context getCurrentContext() {
+        return this.CB_Contexts.getValue();
     }
 
 }
