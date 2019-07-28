@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -52,7 +51,7 @@
             <contextMenu>
                <ContextMenu>
                  <items>
-					 <MenuItem mnemonicParsing="false" onAction="#startTracking" text="Start tracking"/>
+                     <MenuItem mnemonicParsing="false" onAction="#startTracking" text="Start tracking"/>
                    <MenuItem mnemonicParsing="false" text="Edit" />
                      <MenuItem mnemonicParsing="false" onAction="#deleteCurrentIssue" text="Delete" />
                  </items>
@@ -90,18 +89,9 @@
                <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-							<TableView fx:id="TV_TimeEntries" prefHeight="200.0" prefWidth="200.0"
-									   AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-									   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="KW" />
-                               <TableColumn prefWidth="75.0" text="Datum" />
-                                 <TableColumn prefWidth="75.0" text="Start" />
-                                 <TableColumn prefWidth="75.0" text="Stop" />
-                                 <TableColumn prefWidth="75.0" text="Dauer" />
-                                 <TableColumn prefWidth="75.0" text="Beschreibung" />
-                             </columns>
-                           </TableView>
+                            <TableView fx:id="TV_TimeEntries" prefHeight="200.0" prefWidth="200.0"
+                                       AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0"/>
                         </children>
                      </AnchorPane>
                </content>

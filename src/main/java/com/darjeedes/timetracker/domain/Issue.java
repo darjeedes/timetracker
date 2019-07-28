@@ -32,11 +32,7 @@ public class Issue extends TimeTrackerEntity {
      * The list of time entries that represent the work time.
      */
     @OneToMany
-    private List<TimeEntry> timeEntries;
-
-    public Issue() {
-        this.timeEntries = new ArrayList<>();
-    }
+    private List<TimeEntry> timeEntries = new ArrayList<>();
 
     public int getNumber() {
         return this.number;
@@ -66,16 +62,10 @@ public class Issue extends TimeTrackerEntity {
         return this.timeEntries;
     }
 
-    public void setTimeEntries(final List<TimeEntry> timeEntries) {
-        this.timeEntries = timeEntries;
-    }
-
-    public void startTimer() {
-        if (this.currentTimeEntry == null) {
-            TimeEntry timeEntry = new TimeEntry().start();
-            this.timeEntries.add(timeEntry);
-            this.currentTimeEntry = timeEntry;
-        }
+    public void startTimer(final TimeEntry timeEntryToStart) {
+        stopTimer();
+        timeEntryToStart.start();
+        this.currentTimeEntry = timeEntryToStart;
     }
 
     public void stopTimer() {
@@ -83,6 +73,14 @@ public class Issue extends TimeTrackerEntity {
             this.currentTimeEntry.stop();
             this.currentTimeEntry = null;
         }
+    }
+
+    public void addTimeEntry(final TimeEntry timeEntryToAdd) {
+        this.timeEntries.add(timeEntryToAdd);
+    }
+
+    public void deleteTimeEntry(final TimeEntry timeEntryToDelete) {
+        this.timeEntries.remove(timeEntryToDelete);
     }
 
     @Override

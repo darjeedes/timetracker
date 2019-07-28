@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+// TODO: Remove SceneManager, as it isn't needed anymore.
 public class SceneManager {
 
     private static final int WINDOW_WIDTH = 800;
@@ -18,7 +19,6 @@ public class SceneManager {
 
     private Stage primaryStage;
     private Scene mainScene;
-    private Scene issueScene;
 
     public SceneManager(final Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -26,7 +26,6 @@ public class SceneManager {
         try {
             DataService dataService = new DataService();
             this.mainScene = createScene(VIEWS_BASE_PATH + "/main/layout.fxml", dataService);
-            this.issueScene = createScene(VIEWS_BASE_PATH + "/issue/layout.fxml", dataService);
         } catch (IOException ex) {
             // TODO: Log error or at least display it. Shouldn't ever occur as long as the app files have integrity.
             // TODO: Don't exit from here, as it's ugly.
@@ -47,10 +46,6 @@ public class SceneManager {
 
     public void switchToMainScene() {
         this.primaryStage.setScene(this.mainScene);
-    }
-
-    public void switchToIssueScene() {
-        this.primaryStage.setScene(this.issueScene);
     }
 
 }

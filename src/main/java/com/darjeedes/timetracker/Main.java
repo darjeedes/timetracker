@@ -15,7 +15,12 @@ public class Main extends Application {
         sceneManager.switchToMainScene();
 
         primaryStage.setTitle("Hello World");
+        primaryStage.setOnCloseRequest(e -> handleExit());
         primaryStage.show();
+    }
+
+    private void handleExit() {
+        // TODO: save entities before exit.
     }
 
     public static void main(String[] args) {

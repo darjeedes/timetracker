@@ -7,6 +7,7 @@ import java.util.List;
 import com.darjeedes.timetracker.domain.BaseData;
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
+import com.darjeedes.timetracker.domain.TimeEntry;
 import com.darjeedes.timetracker.domain.TimeTrackerEntity;
 import com.darjeedes.timetracker.persistence.low.DataAccess;
 import com.darjeedes.timetracker.persistence.low.DataAccessImpl;
@@ -30,36 +31,34 @@ public class DataService {
         }
     }
 
-    public void addContext() {
-        Context contextToAdd = new Context();
-        this.baseData.getContexts().add(contextToAdd);
-        save(contextToAdd);
-    }
-
     public void addContext(final Context contextToAdd) {
-        this.baseData.getContexts().add(contextToAdd);
+        this.baseData.addContext(contextToAdd);
         save(contextToAdd);
     }
 
     public void deleteContext(final Context contextToDelete) {
-        this.baseData.getContexts().remove(contextToDelete);
+        this.baseData.deleteContext(contextToDelete);
         delete(contextToDelete);
     }
 
-    public void addIssue() {
-        Issue issueToAdd = new Issue();
-        this.currentContext.getIssues().add(issueToAdd);
+    public void addIssueToContext(final Context context, final Issue issueToAdd) {
+        context.addIssue(issueToAdd);
         save(issueToAdd);
     }
 
-    public void addIssue(final Issue issueToAdd) {
-        this.currentContext.getIssues().add(issueToAdd);
-        save(issueToAdd);
-    }
-
-    public void deleteIssue(final Issue issueToDelete) {
-        this.currentContext.getIssues().remove(issueToDelete);
+    public void deleteIssueFromContext(final Context context, final Issue issueToDelete) {
+        context.deleteIssue(issueToDelete);
         delete(issueToDelete);
+    }
+
+    public void addTimeEntryToIssue(final Issue issue, final TimeEntry timeEntryToAdd) {
+        issue.addTimeEntry(timeEntryToAdd);
+        save(timeEntryToAdd);
+    }
+
+    public void deleteTimeEntryFromIssue(final Issue issue, final TimeEntry timeEntryToDelete) {
+        issue.deleteTimeEntry(timeEntryToDelete);
+        save(timeEntryToDelete);
     }
 
     private void save(TimeTrackerEntity timeTrackerEntity) {
@@ -70,46 +69,12 @@ public class DataService {
         this.dataAccess.delete(timeTrackerEntity);
     }
 
-    public void saveCurrentContext() {
-        this.save(this.currentContext);
-    }
-
-    public void saveCurrentIssue() {
-        this.save(this.currentIssue);
-    }
-
     public List<Context> getContexts() {
         if (this.baseData != null) {
             return this.baseData.getContexts();
         } else {
             return new ArrayList<>();
         }
-    }
-
-    public List<Issue> getIssues() {
-        if (this.currentContext != null) {
-            return this.currentContext.getIssues();
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    public Context getCurrentContext() {
-        // TODO: Remove class variable and rely on contextcombobox
-        return this.currentContext;
-    }
-
-    public Issue getCurrentIssue() {
-        // TODO: Remove class variable and rely on issuelist
-        return this.currentIssue;
-    }
-
-    public void setCurrentIssue(final Issue currentIssue) {
-        this.currentIssue = currentIssue;
-    }
-
-    public void setCurrentContext(final Context context) {
-        this.currentContext = context;
     }
 
 }

@@ -16,7 +16,7 @@ public class BaseData extends TimeTrackerEntity {
     private List<Context> contexts = new ArrayList<>();
 
     public String getIssueManagementSystemBaseUrl() {
-        return issueManagementSystemBaseUrl;
+        return this.issueManagementSystemBaseUrl;
     }
 
     public void setIssueManagementSystemBaseUrl(final String issueManagementSystemBaseUrl) {
@@ -24,11 +24,15 @@ public class BaseData extends TimeTrackerEntity {
     }
 
     public List<Context> getContexts() {
-        return contexts;
+        return this.contexts;
     }
 
-    public void setContexts(final List<Context> contexts) {
-        this.contexts = contexts;
+    public void addContext(final Context contextToAdd) {
+        this.contexts.add(contextToAdd);
+    }
+
+    public void deleteContext(final Context contextToDelete) {
+        this.contexts.remove(contextToDelete);
     }
 
 }

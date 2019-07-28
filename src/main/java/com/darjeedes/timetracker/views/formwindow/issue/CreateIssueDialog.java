@@ -11,7 +11,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateIssue extends FormWindow {
+public class CreateIssueDialog extends FormWindow {
 
     private Issue issue;
 
@@ -29,7 +29,7 @@ public class CreateIssue extends FormWindow {
         this.issue.setTitle(this.tfTitle.getText());
     }
 
-    public Issue displayForm() {
+    public Issue show() {
 
         Stage window = createStage("New Issue");
 

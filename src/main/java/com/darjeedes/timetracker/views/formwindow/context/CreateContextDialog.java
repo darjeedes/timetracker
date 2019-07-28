@@ -11,7 +11,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateContext extends FormWindow {
+public class CreateContextDialog extends FormWindow {
 
     private Context context;
 
@@ -25,7 +25,7 @@ public class CreateContext extends FormWindow {
         this.context.setTag(this.tfTag.getText());
     }
 
-    public Context displayForm() {
+    public Context show() {
 
         Stage window = createStage("New Context");
 

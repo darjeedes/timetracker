@@ -1,8 +1,9 @@
 package com.darjeedes.timetracker.views.main;
 
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import com.darjeedes.timetracker.domain.Context;
@@ -10,14 +11,15 @@ import com.darjeedes.timetracker.domain.Issue;
 import com.darjeedes.timetracker.domain.TimeEntry;
 import com.darjeedes.timetracker.views.BaseController;
 import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
-import com.darjeedes.timetracker.views.formwindow.context.CreateContext;
-import com.darjeedes.timetracker.views.formwindow.issue.CreateIssue;
+import com.darjeedes.timetracker.views.formwindow.context.CreateContextDialog;
+import com.darjeedes.timetracker.views.formwindow.issue.CreateIssueDialog;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -54,18 +56,72 @@ public class MainController extends BaseController implements Initializable {
         this.TV_Issues.getColumns().addAll(statusColumn, titleColumn);
 
 
-        TableColumn<TimeEntry, Integer> kwColumn = new TableColumn<>("KW");
-        TableColumn<TimeEntry, LocalDate> startDateColumn = new TableColumn<>("Date");
-        TableColumn<TimeEntry, LocalTime> startTimeColumn = new TableColumn<>("Start");
-        TableColumn<TimeEntry, LocalTime> stopTimeColumn = new TableColumn<>("Stop");
+        TableColumn<TimeEntry, LocalDateTime> kwColumn = new TableColumn<>("KW");
+        kwColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
+        kwColumn.setCellFactory(column -> new TableCell<TimeEntry, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime startTime, boolean empty) {
+                super.updateItem(startTime, empty);
+                if (empty || startTime == null) {
+                    setText("");
+                } else {
+                    setText(DateTimeFormatter.ofPattern("w").format(startTime));
+                }
+            }
+        });
+
+        TableColumn<TimeEntry, LocalDateTime> startDateColumn = new TableColumn<>("Date");
+        startDateColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
+        startDateColumn.setCellFactory(column -> new TableCell<TimeEntry, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime startTime, boolean empty) {
+                super.updateItem(startTime, empty);
+                if (empty || startTime == null) {
+                    setText("");
+                } else {
+                    setText(DateTimeFormatter.ofPattern("dd-MM-yyyy").format(startTime));
+                }
+            }
+        });
+
+        TableColumn<TimeEntry, LocalDateTime> startTimeColumn = new TableColumn<>("Start");
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
+        startTimeColumn.setCellFactory(column -> new TableCell<TimeEntry, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime startTime, boolean empty) {
+                super.updateItem(startTime, empty);
+                if (empty || startTime == null) {
+                    setText("");
+                } else {
+                    setText(DateTimeFormatter.ofPattern("HH:mm:ss").format(startTime));
+                }
+            }
+        });
+
+
+        TableColumn<TimeEntry, LocalDateTime> stopTimeColumn = new TableColumn<>("Stop");
+        stopTimeColumn.setCellValueFactory(new PropertyValueFactory("stopTime"));
+        stopTimeColumn.setCellFactory(column -> new TableCell<TimeEntry, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime startTime, boolean empty) {
+                super.updateItem(startTime, empty);
+                if (empty || startTime == null) {
+                    setText("");
+                } else {
+                    setText(DateTimeFormatter.ofPattern("HH:mm:ss").format(startTime));
+                }
+            }
+        });
+
         TableColumn<TimeEntry, LocalTime> durationColumn = new TableColumn<>("Duration");
         TableColumn<TimeEntry, LocalTime> descriptionColumn = new TableColumn<>("Description");
 
-        startDateColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
+        this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
+
     }
 
     public void addContext() {
-        Context contextToAdd = new CreateContext().displayForm();
+        Context contextToAdd = new CreateContextDialog().show();
         if (contextToAdd != null) {
             this.getDataService().addContext(contextToAdd);
         }
@@ -82,9 +138,9 @@ public class MainController extends BaseController implements Initializable {
     }
 
     public void addIssue() {
-        Issue issueToAdd = new CreateIssue().displayForm();
+        Issue issueToAdd = new CreateIssueDialog().show();
         if (issueToAdd != null) {
-            this.getDataService().addIssue(issueToAdd);
+            this.getDataService().addIssueToContext(getCurrentContext(), issueToAdd);
             refreshIssueList();
         }
     }
@@ -93,34 +149,23 @@ public class MainController extends BaseController implements Initializable {
         Issue issueToDelete = this.TV_Issues.getSelectionModel().getSelectedItem();
         if (issueToDelete != null) {
             if (new ConfirmDialog().show("Do you really want to delete " + issueToDelete.getTitle() + "?")) {
-                getDataService().deleteIssue(issueToDelete);
+                getDataService().deleteIssueFromContext(getCurrentContext(), issueToDelete);
                 refreshIssueList();
             }
         }
     }
 
-    public void saveContext() {
-        this.getDataService().saveCurrentContext();
-    }
-
     public void loadContext() {
-        Context selectedContext = this.CB_Contexts.getValue();
-
-        if (selectedContext != null) {
-            this.getDataService().setCurrentContext(selectedContext);
-            refreshIssueList();
-        }
+        refreshIssueList();
     }
 
     public void loadIssue() {
-        Issue selectedIssue = this.TV_Issues.getSelectionModel().getSelectedItem();
+        Issue selectedIssue = getCurrentIssue();
 
         if (selectedIssue != null) {
-            this.getDataService().setCurrentIssue(selectedIssue);
-
             // TODO: ManyToOne Context als parent in issue, dann issue.getContext nutzen
             this.LB_IssueName.setText(
-                    getDataService().getCurrentContext().getTag() + "-" + selectedIssue.getNumber() + ": "
+                    getCurrentContext().getTag() + "-" + selectedIssue.getNumber() + ": "
                             + selectedIssue.getTitle());
             this.TA_IssueNotes.setText(selectedIssue.getNotes());
 
@@ -130,19 +175,40 @@ public class MainController extends BaseController implements Initializable {
     }
 
     public void refreshContextComboBox() {
-        this.CB_Contexts.setItems(FXCollections.observableList(this.getDataService().getContexts()));
+        this.CB_Contexts.setItems(FXCollections.observableList(getDataService().getContexts()));
     }
 
     public void refreshIssueList() {
-        this.TV_Issues.setItems(FXCollections.observableList(this.getDataService().getIssues()));
+        Context currentContext = getCurrentContext();
+        if (currentContext != null) {
+            this.TV_Issues.setItems(FXCollections.observableList(getCurrentContext().getIssues()));
+        }
     }
 
     public void refreshTimeEntryList() {
-        this.TV_TimeEntries.setItems(FXCollections.observableList(this.getDataService().getCurrentIssue().getTimeEntries()));
+        Issue currentIssue = getCurrentIssue();
+        if (currentIssue != null) {
+            this.TV_TimeEntries.setItems(FXCollections.observableList(getCurrentIssue().getTimeEntries()));
+        }
     }
 
     public void startTracking() {
+        Issue currentIssue = getCurrentIssue();
+        if (currentIssue != null) {
+            currentIssue.stopTimer();
+            TimeEntry timeEntryToAdd = new TimeEntry();
+            getDataService().addTimeEntryToIssue(currentIssue, timeEntryToAdd);
+            currentIssue.startTimer(timeEntryToAdd);
+            refreshTimeEntryList();
+        }
+    }
 
+    public void stopTracking() {
+        Issue currentIssue = getCurrentIssue();
+        if (currentIssue != null) {
+            currentIssue.stopTimer();
+            refreshTimeEntryList();
+        }
     }
 
     /**
@@ -152,6 +218,15 @@ public class MainController extends BaseController implements Initializable {
      */
     private Context getCurrentContext() {
         return this.CB_Contexts.getValue();
+    }
+
+    /**
+     * Retrieves the current issue by accessing the selected item of the TableView UI-Element.
+     *
+     * @return the current issue or null, if none selected.
+     */
+    private Issue getCurrentIssue() {
+        return this.TV_Issues.getSelectionModel().getSelectedItem();
     }
 
 }

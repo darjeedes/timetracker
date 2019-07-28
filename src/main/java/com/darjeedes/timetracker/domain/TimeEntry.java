@@ -9,7 +9,7 @@ public class TimeEntry extends TimeTrackerEntity {
 
     private LocalDateTime startTime;
 
-    private LocalDateTime endTime;
+    private LocalDateTime stopTime;
 
     public TimeEntry start() {
         this.startTime = LocalDateTime.now();
@@ -17,15 +17,15 @@ public class TimeEntry extends TimeTrackerEntity {
     }
 
     public void stop() {
-        this.endTime = LocalDateTime.now();
+        this.stopTime = LocalDateTime.now();
     }
 
     public LocalDateTime getStartTime() {
         return this.startTime;
     }
 
-    public LocalDateTime getEndTime() {
-        return this.endTime;
+    public LocalDateTime getStopTime() {
+        return this.stopTime;
     }
 
 }
