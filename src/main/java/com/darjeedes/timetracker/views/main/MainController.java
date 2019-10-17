@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 public class MainController extends BaseController implements Initializable {
 
@@ -42,6 +43,9 @@ public class MainController extends BaseController implements Initializable {
     @FXML
     private TextArea TA_IssueNotes;
 
+    @FXML
+    private VBox VBoxRight;
+
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         TableColumn<Issue, Boolean> statusColumn = new TableColumn("Status");
@@ -51,7 +55,7 @@ public class MainController extends BaseController implements Initializable {
         titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
 
         statusColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.25));
-        titleColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.75));
+        titleColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.74));
 
         this.TV_Issues.getColumns().addAll(statusColumn, titleColumn);
 
@@ -118,12 +122,14 @@ public class MainController extends BaseController implements Initializable {
 
         this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
 
+        refreshVBoxRight();
     }
 
     public void addContext() {
         Context contextToAdd = new CreateContextDialog().show();
         if (contextToAdd != null) {
             this.getDataService().addContext(contextToAdd);
+            refreshVBoxRight();
         }
     }
 
@@ -133,6 +139,7 @@ public class MainController extends BaseController implements Initializable {
             if (new ConfirmDialog().show("Do you really want to delete " + contextToDelete.getName() + "?")) {
                 getDataService().deleteContext(contextToDelete);
                 refreshContextComboBox();
+                refreshVBoxRight();
             }
         }
     }
@@ -151,12 +158,14 @@ public class MainController extends BaseController implements Initializable {
             if (new ConfirmDialog().show("Do you really want to delete " + issueToDelete.getTitle() + "?")) {
                 getDataService().deleteIssueFromContext(getCurrentContext(), issueToDelete);
                 refreshIssueList();
+                refreshVBoxRight();
             }
         }
     }
 
     public void loadContext() {
         refreshIssueList();
+        refreshVBoxRight();
     }
 
     public void loadIssue() {
@@ -170,8 +179,19 @@ public class MainController extends BaseController implements Initializable {
             this.TA_IssueNotes.setText(selectedIssue.getNotes());
 
             refreshTimeEntryList();
+            refreshVBoxRight();
         }
 
+    }
+
+    public void saveNotes() {
+        String textToSave = this.TA_IssueNotes.getText();
+        Issue currentIssue = getCurrentIssue();
+
+        if (currentIssue != null) {
+            currentIssue.setNotes(textToSave);
+            this.dataService.save(currentIssue);
+        }
     }
 
     public void refreshContextComboBox() {
@@ -188,27 +208,22 @@ public class MainController extends BaseController implements Initializable {
     public void refreshTimeEntryList() {
         Issue currentIssue = getCurrentIssue();
         if (currentIssue != null) {
-            this.TV_TimeEntries.setItems(FXCollections.observableList(getCurrentIssue().getTimeEntries()));
+            this.TV_TimeEntries.setItems(FXCollections.observableList(currentIssue.getTimeEntries()));
         }
+    }
+
+    public void refreshVBoxRight() {
+        this.VBoxRight.setVisible(hasIssue());
     }
 
     public void startTracking() {
-        Issue currentIssue = getCurrentIssue();
-        if (currentIssue != null) {
-            currentIssue.stopTimer();
-            TimeEntry timeEntryToAdd = new TimeEntry();
-            getDataService().addTimeEntryToIssue(currentIssue, timeEntryToAdd);
-            currentIssue.startTimer(timeEntryToAdd);
-            refreshTimeEntryList();
-        }
+        this.timeTrackerService.startTracking(getCurrentIssue());
+        refreshTimeEntryList();
     }
 
     public void stopTracking() {
-        Issue currentIssue = getCurrentIssue();
-        if (currentIssue != null) {
-            currentIssue.stopTimer();
-            refreshTimeEntryList();
-        }
+        this.timeTrackerService.stopTracking();
+        refreshTimeEntryList();
     }
 
     /**
@@ -220,6 +235,10 @@ public class MainController extends BaseController implements Initializable {
         return this.CB_Contexts.getValue();
     }
 
+    private boolean hasContext() {
+        return getCurrentContext() != null;
+    }
+
     /**
      * Retrieves the current issue by accessing the selected item of the TableView UI-Element.
      *
@@ -227,6 +246,10 @@ public class MainController extends BaseController implements Initializable {
      */
     private Issue getCurrentIssue() {
         return this.TV_Issues.getSelectionModel().getSelectedItem();
+    }
+
+    private boolean hasIssue() {
+        return getCurrentIssue() != null;
     }
 
 }

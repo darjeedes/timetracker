@@ -51,7 +51,8 @@
             <contextMenu>
                <ContextMenu>
                  <items>
-                     <MenuItem mnemonicParsing="false" onAction="#startTracking" text="Start tracking"/>
+					 <MenuItem mnemonicParsing="false" onAction="#startTracking" text="Start tracking"/>
+					 <MenuItem mnemonicParsing="false" onAction="#stopTracking" text="Stop tracking"/>
                    <MenuItem mnemonicParsing="false" text="Edit" />
                      <MenuItem mnemonicParsing="false" onAction="#deleteCurrentIssue" text="Delete" />
                  </items>
@@ -59,7 +60,7 @@
             </contextMenu></TableView>
       </children>
    </VBox>
-   <VBox GridPane.columnIndex="1">
+	<VBox fx:id="VBoxRight" GridPane.columnIndex="1">
       <children>
          <AnchorPane>
             <children>
@@ -76,7 +77,9 @@
                <content>
                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
                         <children>
-                           <TextArea fx:id="TA_IssueNotes" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+							<TextArea fx:id="TA_IssueNotes" onKeyReleased="#saveNotes" wrapText="true"
+									  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+									  AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                               <font>
                                  <Font name="Consolas" size="12.0" />
                               </font>
@@ -89,9 +92,9 @@
                <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <TableView fx:id="TV_TimeEntries" prefHeight="200.0" prefWidth="200.0"
-                                       AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0"/>
+							<TableView fx:id="TV_TimeEntries" prefHeight="200.0" prefWidth="200.0"
+									   AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+									   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0"/>
                         </children>
                      </AnchorPane>
                </content>

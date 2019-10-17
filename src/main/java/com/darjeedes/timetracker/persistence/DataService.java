@@ -19,8 +19,6 @@ public class DataService {
 
     private DataAccess dataAccess;
     private BaseData baseData;
-    private Context currentContext;
-    private Issue currentIssue;
 
     public DataService() {
         this.dataAccess = new DataAccessImpl();
@@ -61,7 +59,7 @@ public class DataService {
         save(timeEntryToDelete);
     }
 
-    private void save(TimeTrackerEntity timeTrackerEntity) {
+    public void save(TimeTrackerEntity timeTrackerEntity) {
         this.dataAccess.save(timeTrackerEntity);
     }
 
