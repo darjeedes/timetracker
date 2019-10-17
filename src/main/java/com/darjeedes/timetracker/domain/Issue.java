@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 @Entity
 public class Issue extends TimeTrackerEntity {
@@ -24,9 +23,6 @@ public class Issue extends TimeTrackerEntity {
      * The notes.
      */
     private String notes;
-
-    @Transient
-    private TimeEntry currentTimeEntry;
 
     /**
      * The list of time entries that represent the work time.
@@ -63,15 +59,12 @@ public class Issue extends TimeTrackerEntity {
     }
 
     public void startTimer(final TimeEntry timeEntryToStart) {
-        stopTimer();
         timeEntryToStart.start();
-        this.currentTimeEntry = timeEntryToStart;
     }
 
     public void stopTimer() {
-        if (this.currentTimeEntry != null) {
-            this.currentTimeEntry.stop();
-            this.currentTimeEntry = null;
+        if (this.timeEntries.size() > 0 && this.timeEntries.get(this.timeEntries.size() - 1).getStopTime() == null) {
+            this.timeEntries.get(this.timeEntries.size() - 1).stop();
         }
     }
 

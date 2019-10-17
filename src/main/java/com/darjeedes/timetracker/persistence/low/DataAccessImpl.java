@@ -29,6 +29,11 @@ public class DataAccessImpl implements DataAccess {
         return baseData;
     }
 
+    @Override
+    public <T> T get(final Class<T> type, final int id) {
+        return this.entityManager.find(type, id);
+    }
+
     /**
      * Saves a {@link TimeTrackerEntity} to the DB.
      *

@@ -29,6 +29,10 @@ public class DataService {
         }
     }
 
+    public <T> T get(final Class<T> type, final Integer id) {
+        return this.dataAccess.get(type, id);
+    }
+
     public void addContext(final Context contextToAdd) {
         this.baseData.addContext(contextToAdd);
         save(contextToAdd);

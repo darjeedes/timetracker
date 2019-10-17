@@ -6,7 +6,7 @@ import com.darjeedes.timetracker.persistence.DataService;
 
 public class TimeTrackerService {
 
-    private Issue runningIssue;
+    private Integer runningIssueId;
     private DataService dataService;
 
     public TimeTrackerService(final DataService dataService) {
@@ -14,27 +14,27 @@ public class TimeTrackerService {
     }
 
     public void startTracking(final Issue issue) {
-
-        stopTimer();
-
         if (issue != null) {
+
+            if (this.runningIssueId != null && !this.runningIssueId.equals(issue.getId())) {
+                Issue stillRunningIssue = this.dataService.get(Issue.class, this.runningIssueId);
+                stillRunningIssue.stopTimer();
+            } else {
+                issue.stopTimer();
+            }
+
             TimeEntry timeEntryToAdd = new TimeEntry();
             this.dataService.addTimeEntryToIssue(issue, timeEntryToAdd);
             issue.startTimer(timeEntryToAdd);
-            this.runningIssue = issue;
-            this.dataService.save(this.runningIssue);
+            this.dataService.save(issue);
+            this.runningIssueId = issue.getId();
         }
     }
 
-    public void stopTracking() {
-        stopTimer();
-    }
-
-    private void stopTimer() {
-        if (this.runningIssue != null) {
-            this.runningIssue.stopTimer();
-            this.dataService.save(this.runningIssue);
-            this.runningIssue = null;
+    public void stopTracking(final Issue issue) {
+        if (issue != null) {
+            issue.stopTimer();
+            this.dataService.save(issue);
         }
     }
 

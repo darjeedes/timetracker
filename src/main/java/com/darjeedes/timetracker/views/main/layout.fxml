@@ -47,7 +47,7 @@
             </children>
          </AnchorPane>
          <HBox />
-         <TableView fx:id="TV_Issues" onMouseClicked="#loadIssue" prefWidth="270.0" VBox.vgrow="ALWAYS">
+		  <TableView fx:id="TV_Issues" prefWidth="270.0" VBox.vgrow="ALWAYS">
             <contextMenu>
                <ContextMenu>
                  <items>
