@@ -18,7 +18,7 @@ public class ConfirmDialog extends FormWindow {
     }
 
     public boolean show(final String message) {
-        Stage window = createStage("Confirmation needed:");
+        Stage window = createStage("Please confirm");
 
         Label lbMessage = new Label(message);
         Button btContinue = new Button("Yes");

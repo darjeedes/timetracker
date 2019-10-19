@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Issue extends TimeTrackerEntity {
@@ -29,6 +30,9 @@ public class Issue extends TimeTrackerEntity {
      */
     @OneToMany
     private List<TimeEntry> timeEntries = new ArrayList<>();
+
+    @Transient
+    private boolean running;
 
     public int getNumber() {
         return this.number;
@@ -58,14 +62,24 @@ public class Issue extends TimeTrackerEntity {
         return this.timeEntries;
     }
 
+    public boolean isRunning() {
+        return this.running;
+    }
+
+    public void setRunning(final boolean running) {
+        this.running = running;
+    }
+
     public void startTimer(final TimeEntry timeEntryToStart) {
         timeEntryToStart.start();
+        this.running = true;
     }
 
     public void stopTimer() {
         if (this.timeEntries.size() > 0 && this.timeEntries.get(this.timeEntries.size() - 1).getStopTime() == null) {
             this.timeEntries.get(this.timeEntries.size() - 1).stop();
         }
+        this.running = false;
     }
 
     public void addTimeEntry(final TimeEntry timeEntryToAdd) {

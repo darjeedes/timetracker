@@ -15,9 +15,9 @@ import com.darjeedes.timetracker.views.formwindow.context.CreateContextDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.CreateIssueDialog;
 
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -25,8 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class MainController extends BaseController implements Initializable {
@@ -48,6 +46,9 @@ public class MainController extends BaseController implements Initializable {
 
     @FXML
     private VBox VBoxRight;
+
+    @FXML
+    private Button BT_StartStop;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
@@ -125,14 +126,14 @@ public class MainController extends BaseController implements Initializable {
 
         this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
 
-        this.TV_Issues.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    onIssueClick();
-                }
-            }
-        });
+//        this.TV_Issues.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+//                    onIssueClick();
+//                }
+//            }
+//        });
 
         refreshVBoxRight();
     }
@@ -175,7 +176,13 @@ public class MainController extends BaseController implements Initializable {
         }
     }
 
-    public void loadContext() {
+    public void onContextClick() {
+
+        Integer selectedContextId = getContextIdFromTable();
+        if (selectedContextId != null) {
+            this.selectedContextId = selectedContextId;
+        }
+
         refreshIssueList();
         refreshVBoxRight();
     }
@@ -204,6 +211,7 @@ public class MainController extends BaseController implements Initializable {
 
             refreshTimeEntryList();
             refreshVBoxRight();
+            refreshBTStartStop();
         }
     }
 
@@ -224,6 +232,7 @@ public class MainController extends BaseController implements Initializable {
         Context currentContext = getCurrentContext();
         if (currentContext != null) {
             this.TV_Issues.setItems(FXCollections.observableList(getCurrentContext().getIssues()));
+            this.TV_Issues.refresh();
         }
     }
 
@@ -231,11 +240,34 @@ public class MainController extends BaseController implements Initializable {
         Issue currentIssue = getCurrentIssue();
         if (currentIssue != null) {
             this.TV_TimeEntries.setItems(FXCollections.observableList(currentIssue.getTimeEntries()));
+            this.TV_TimeEntries.refresh();
         }
     }
 
     public void refreshVBoxRight() {
-        this.VBoxRight.setVisible(hasIssue());
+//        this.VBoxRight.setVisible(hasIssue());
+        this.VBoxRight.setVisible(true);
+    }
+
+    public void refreshBTStartStop() {
+        Issue currentIssue = getCurrentIssue();
+        if (currentIssue != null) {
+            this.BT_StartStop.setText(currentIssue.isRunning() ? "Stop" : "Start");
+        }
+    }
+
+    public void onStartStopButtonClick() {
+        Issue currentIssue = getCurrentIssue();
+
+        if (currentIssue != null) {
+            if (!currentIssue.isRunning()) {
+                startTracking();
+            } else {
+                stopTracking();
+            }
+        }
+
+        refreshBTStartStop();
     }
 
     public void startTracking() {
@@ -244,12 +276,31 @@ public class MainController extends BaseController implements Initializable {
         if (currentIssue != null) {
             this.timeTrackerService.startTracking(currentIssue);
             refreshTimeEntryList();
+            refreshIssueList();
         }
     }
 
     public void stopTracking() {
         this.timeTrackerService.stopTracking(getCurrentIssue());
         refreshTimeEntryList();
+        refreshIssueList();
+    }
+
+    private Context getCurrentContext() {
+        if (this.selectedContextId != null) {
+            return this.dataService.get(Context.class, this.selectedContextId);
+        } else {
+            return null;
+        }
+    }
+
+    private Integer getContextIdFromTable() {
+        Context selectedContext = this.CB_Contexts.getValue();
+        return selectedContext != null ? selectedContext.getId() : null;
+    }
+
+    private boolean hasContext() {
+        return getCurrentContext() != null;
     }
 
     private Issue getCurrentIssue() {
@@ -258,19 +309,6 @@ public class MainController extends BaseController implements Initializable {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Retrieves the current context by accessing the selected item of the ComboBox UI-Element.
-     *
-     * @return the current context or null, if none selected.
-     */
-    private Context getCurrentContext() {
-        return this.CB_Contexts.getValue();
-    }
-
-    private boolean hasContext() {
-        return getCurrentContext() != null;
     }
 
     private Integer getIssueIdFromTable() {

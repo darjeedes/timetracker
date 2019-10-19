@@ -8,6 +8,7 @@ public class BaseController {
     protected DataService dataService;
     protected TimeTrackerService timeTrackerService;
 
+    protected Integer selectedContextId;
     protected Integer selectedIssueId;
 
     public BaseController() {
