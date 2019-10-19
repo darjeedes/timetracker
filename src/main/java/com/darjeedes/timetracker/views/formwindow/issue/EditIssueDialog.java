@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateIssueDialog extends FormWindow {
+public class EditIssueDialog extends FormWindow {
 
     private Issue issue;
 
@@ -21,7 +21,6 @@ public class CreateIssueDialog extends FormWindow {
 
     @Override
     public void prepareEntity() {
-        this.issue = new Issue();
         try {
             this.issue.setNumber(Integer.parseInt(this.tfNumber.getText()));
         } catch (NumberFormatException e) {
@@ -30,12 +29,13 @@ public class CreateIssueDialog extends FormWindow {
         this.issue.setTitle(this.tfTitle.getText());
     }
 
-    public Issue show() {
+    public Issue show(final Issue issue) {
+        this.issue = issue;
 
-        Stage window = createStage("New Issue");
+        Stage window = createStage("Edit Issue");
 
-        this.tfNumber = new TextField();
-        this.tfTitle = new TextField();
+        this.tfNumber = new TextField(issue.getNumber() + "");
+        this.tfTitle = new TextField(issue.getTitle());
 
         Button btContinue = new Button("OK");
         Button btCancel = new Button("Cancel");
@@ -46,7 +46,7 @@ public class CreateIssueDialog extends FormWindow {
         });
 
         btCancel.setOnAction(e -> {
-            this.issue = null;
+//            this.issue = null;
             window.close();
         });
 

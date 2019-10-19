@@ -34,7 +34,7 @@
          <AnchorPane>
             <children>
 
-                <ComboBox fx:id="CB_Contexts" onAction="#onContextClick" onShowing="#refreshContextComboBox"
+                <ComboBox fx:id="CB_Contexts" onHiding="#onContextClick" onShowing="#refreshContextComboBox"
                           AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                           AnchorPane.topAnchor="5.0"/>
             </children>
@@ -45,7 +45,8 @@
                   <font>
                      <Font name="System Bold" size="12.0" />
                   </font></Label>
-               <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#addIssue" text="+" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" />
+                <Button fx:id="BT_AddIssue" mnemonicParsing="false" onAction="#onAddIssueClick" text="+"
+                        AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0"/>
             </children>
          </AnchorPane>
          <HBox />
@@ -53,9 +54,7 @@
             <contextMenu>
                <ContextMenu>
                  <items>
-                     <MenuItem mnemonicParsing="false" onAction="#startTracking" text="Start tracking"/>
-                     <MenuItem mnemonicParsing="false" onAction="#stopTracking" text="Stop tracking"/>
-                   <MenuItem mnemonicParsing="false" text="Edit" />
+                     <MenuItem mnemonicParsing="false" onAction="#onEditIssueClick" text="Edit"/>
                      <MenuItem mnemonicParsing="false" onAction="#deleteCurrentIssue" text="Delete" />
                  </items>
                </ContextMenu>
@@ -74,8 +73,8 @@
                   </font>
                </Label>
                 <Button fx:id="BT_StartStop" layoutX="448.0" layoutY="1.0" mnemonicParsing="false"
-                        onAction="#onStartStopButtonClick" prefHeight="31.0" prefWidth="50.0" text="Button"
-                        AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        onAction="#onStartStopButtonClick" prefHeight="31.0" prefWidth="47.0"
+                        AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0"/>
             </children>
          </AnchorPane>
          <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
@@ -85,8 +84,8 @@
                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
                         <children>
                             <TextArea fx:id="TA_IssueNotes" onKeyReleased="#saveNotes" wrapText="true"
-                                      AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                                      AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                               <font>
                                  <Font name="Consolas" size="12.0" />
                               </font>
@@ -100,8 +99,17 @@
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
                             <TableView fx:id="TV_TimeEntries" prefHeight="200.0" prefWidth="200.0"
-                                       AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
-                                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0"/>
+                                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0"
+                                       AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                <contextMenu>
+                                    <ContextMenu>
+                                        <items>
+                                            <MenuItem mnemonicParsing="false" text="Edit"/>
+                                            <MenuItem mnemonicParsing="false" text="Delete"/>
+                                        </items>
+                                    </ContextMenu>
+                                </contextMenu>
+                            </TableView>
                         </children>
                      </AnchorPane>
                </content>

@@ -13,6 +13,7 @@ import com.darjeedes.timetracker.views.BaseController;
 import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
 import com.darjeedes.timetracker.views.formwindow.context.CreateContextDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.CreateIssueDialog;
+import com.darjeedes.timetracker.views.formwindow.issue.EditIssueDialog;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -126,15 +127,6 @@ public class MainController extends BaseController implements Initializable {
 
         this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
 
-//        this.TV_Issues.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-//                    onIssueClick();
-//                }
-//            }
-//        });
-
         refreshVBoxRight();
     }
 
@@ -157,11 +149,22 @@ public class MainController extends BaseController implements Initializable {
         }
     }
 
-    public void addIssue() {
+    public void onAddIssueClick() {
         Issue issueToAdd = new CreateIssueDialog().show();
         if (issueToAdd != null) {
             this.dataService.addIssueToContext(getCurrentContext(), issueToAdd);
             refreshIssueList();
+        }
+    }
+
+    public void onEditIssueClick() {
+        Issue currentIssue = getCurrentIssue();
+
+        if (currentIssue != null) {
+            new EditIssueDialog().show(currentIssue);
+            this.dataService.save(currentIssue);
+            refreshIssueList();
+            refreshIssueView();
         }
     }
 
@@ -177,10 +180,11 @@ public class MainController extends BaseController implements Initializable {
     }
 
     public void onContextClick() {
-
         Integer selectedContextId = getContextIdFromTable();
-        if (selectedContextId != null) {
+
+        if (selectedContextId != null && !selectedContextId.equals(this.selectedContextId)) {
             this.selectedContextId = selectedContextId;
+            this.selectedIssueId = null;
         }
 
         refreshIssueList();
@@ -190,28 +194,9 @@ public class MainController extends BaseController implements Initializable {
     public void onIssueClick() {
         Integer selectedIssueId = getIssueIdFromTable();
 
-        if (selectedIssueId != null && selectedIssueId.equals(this.selectedIssueId)) {
-            this.selectedIssueId = null;
-            refreshVBoxRight();
-        } else {
+        if (selectedIssueId == null || !selectedIssueId.equals(this.selectedIssueId)) {
             this.selectedIssueId = selectedIssueId;
-            loadIssue();
-        }
-    }
-
-    public void loadIssue() {
-        Issue issue = getCurrentIssue();
-
-        if (issue != null) {
-            // TODO: ManyToOne Context als parent in issue, dann issue.getContext nutzen
-            this.LB_IssueName.setText(
-                    getCurrentContext().getTag() + "-" + issue.getNumber() + ": "
-                            + issue.getTitle());
-            this.TA_IssueNotes.setText(issue.getNotes());
-
-            refreshTimeEntryList();
-            refreshVBoxRight();
-            refreshBTStartStop();
+            refreshIssueView();
         }
     }
 
@@ -228,7 +213,21 @@ public class MainController extends BaseController implements Initializable {
         this.CB_Contexts.setItems(FXCollections.observableList(this.dataService.getContexts()));
     }
 
-    public void refreshIssueList() {
+    private void refreshIssueView() {
+        Issue issue = getCurrentIssue();
+        Context context = getCurrentContext();
+
+        if (context != null && issue != null) {
+            this.LB_IssueName.setText(context.getTag() + "-" + issue.getNumber() + ": " + issue.getTitle());
+            this.TA_IssueNotes.setText(issue.getNotes());
+
+            refreshTimeEntryList();
+            refreshVBoxRight();
+            refreshBTStartStop();
+        }
+    }
+
+    private void refreshIssueList() {
         Context currentContext = getCurrentContext();
         if (currentContext != null) {
             this.TV_Issues.setItems(FXCollections.observableList(getCurrentContext().getIssues()));
@@ -236,7 +235,7 @@ public class MainController extends BaseController implements Initializable {
         }
     }
 
-    public void refreshTimeEntryList() {
+    private void refreshTimeEntryList() {
         Issue currentIssue = getCurrentIssue();
         if (currentIssue != null) {
             this.TV_TimeEntries.setItems(FXCollections.observableList(currentIssue.getTimeEntries()));
@@ -244,12 +243,11 @@ public class MainController extends BaseController implements Initializable {
         }
     }
 
-    public void refreshVBoxRight() {
-//        this.VBoxRight.setVisible(hasIssue());
-        this.VBoxRight.setVisible(true);
+    private void refreshVBoxRight() {
+        this.VBoxRight.setVisible(hasIssue());
     }
 
-    public void refreshBTStartStop() {
+    private void refreshBTStartStop() {
         Issue currentIssue = getCurrentIssue();
         if (currentIssue != null) {
             this.BT_StartStop.setText(currentIssue.isRunning() ? "Stop" : "Start");
@@ -270,7 +268,7 @@ public class MainController extends BaseController implements Initializable {
         refreshBTStartStop();
     }
 
-    public void startTracking() {
+    private void startTracking() {
         Issue currentIssue = getCurrentIssue();
 
         if (currentIssue != null) {
@@ -280,7 +278,7 @@ public class MainController extends BaseController implements Initializable {
         }
     }
 
-    public void stopTracking() {
+    private void stopTracking() {
         this.timeTrackerService.stopTracking(getCurrentIssue());
         refreshTimeEntryList();
         refreshIssueList();

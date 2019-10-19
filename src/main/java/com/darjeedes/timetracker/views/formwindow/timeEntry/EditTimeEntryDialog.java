@@ -1,36 +1,35 @@
-package com.darjeedes.timetracker.views.formwindow.issue;
+package com.darjeedes.timetracker.views.formwindow.timeEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.darjeedes.timetracker.domain.Issue;
+import com.darjeedes.timetracker.domain.TimeEntry;
 import com.darjeedes.timetracker.views.formwindow.FormWindow;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateIssueDialog extends FormWindow {
+public class EditTimeEntryDialog extends FormWindow {
 
-    private Issue issue;
+    private TimeEntry timeEntry;
 
     private TextField tfNumber;
     private TextField tfTitle;
 
     @Override
     public void prepareEntity() {
-        this.issue = new Issue();
+//        this.issue = new Issue();
         try {
-            this.issue.setNumber(Integer.parseInt(this.tfNumber.getText()));
+//            this.timeEntry.setNumber(Integer.parseInt(this.tfNumber.getText()));
         } catch (NumberFormatException e) {
             // TODO: In dire need of some validation across all forms and fields...
         }
-        this.issue.setTitle(this.tfTitle.getText());
+//        this.issue.setTitle(this.tfTitle.getText());
     }
 
-    public Issue show() {
+    public TimeEntry show(final TimeEntry timeEntry) {
 
         Stage window = createStage("New Issue");
 
@@ -46,14 +45,12 @@ public class CreateIssueDialog extends FormWindow {
         });
 
         btCancel.setOnAction(e -> {
-            this.issue = null;
+//            this.issue = null;
             window.close();
         });
 
         List<Control> controls = new ArrayList<>();
-        controls.add(new Label("Ticket Number"));
         controls.add(this.tfNumber);
-        controls.add(new Label("Short Description"));
         controls.add(this.tfTitle);
         controls.add(btContinue);
         controls.add(btCancel);
@@ -62,7 +59,7 @@ public class CreateIssueDialog extends FormWindow {
 
         window.showAndWait();
 
-        return this.issue;
+        return this.timeEntry;
     }
 
 }
