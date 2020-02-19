@@ -1,5 +1,7 @@
 package com.darjeedes.timetracker.views.formwindow.timeEntry;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,26 +17,29 @@ public class EditTimeEntryDialog extends FormWindow {
 
     private TimeEntry timeEntry;
 
-    private TextField tfNumber;
-    private TextField tfTitle;
+    private TextField tfStart;
+    private TextField tfStop;
+    private TextField tfDescription;
 
     @Override
     public void prepareEntity() {
-//        this.issue = new Issue();
         try {
-//            this.timeEntry.setNumber(Integer.parseInt(this.tfNumber.getText()));
-        } catch (NumberFormatException e) {
+            this.timeEntry.setStartTime(LocalDateTime.parse(this.tfStart.getText()));
+            this.timeEntry.setStopTime(LocalDateTime.parse(this.tfStop.getText()));
+            this.timeEntry.setDescription(this.tfDescription.getText());
+        } catch (DateTimeParseException e) {
             // TODO: In dire need of some validation across all forms and fields...
         }
-//        this.issue.setTitle(this.tfTitle.getText());
     }
 
     public TimeEntry show(final TimeEntry timeEntry) {
+        this.timeEntry = timeEntry;
 
-        Stage window = createStage("New Issue");
+        Stage window = createStage("Edit time entry");
 
-        this.tfNumber = new TextField();
-        this.tfTitle = new TextField();
+        this.tfStart = new TextField(timeEntry.getStartTime().toString());
+        this.tfStop = new TextField(timeEntry.getStopTime().toString());
+        this.tfDescription = new TextField(timeEntry.getDescription());
 
         Button btContinue = new Button("OK");
         Button btCancel = new Button("Cancel");
@@ -45,13 +50,13 @@ public class EditTimeEntryDialog extends FormWindow {
         });
 
         btCancel.setOnAction(e -> {
-//            this.issue = null;
             window.close();
         });
 
         List<Control> controls = new ArrayList<>();
-        controls.add(this.tfNumber);
-        controls.add(this.tfTitle);
+        controls.add(this.tfStart);
+        controls.add(this.tfStop);
+        controls.add(this.tfDescription);
         controls.add(btContinue);
         controls.add(btCancel);
 

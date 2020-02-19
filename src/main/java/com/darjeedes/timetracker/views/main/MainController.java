@@ -14,6 +14,7 @@ import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
 import com.darjeedes.timetracker.views.formwindow.context.CreateContextDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.CreateIssueDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.EditIssueDialog;
+import com.darjeedes.timetracker.views.formwindow.timeEntry.EditTimeEntryDialog;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -123,7 +124,10 @@ public class MainController extends BaseController implements Initializable {
         });
 
         TableColumn<TimeEntry, LocalTime> durationColumn = new TableColumn<>("Duration");
+        durationColumn.setCellValueFactory(new PropertyValueFactory("duration"));
+
         TableColumn<TimeEntry, LocalTime> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory("description"));
 
         this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
 
@@ -176,6 +180,27 @@ public class MainController extends BaseController implements Initializable {
                 refreshIssueList();
                 refreshVBoxRight();
             }
+        }
+    }
+
+    public void onDeleteTimeEntryClick() {
+        Issue selectedIssue = this.TV_Issues.getSelectionModel().getSelectedItem();
+        TimeEntry timeEntryToDelete = this.TV_TimeEntries.getSelectionModel().getSelectedItem();
+        if (timeEntryToDelete != null) {
+            if (new ConfirmDialog().show("Do you really want to delete this time entry?")) {
+                this.dataService.deleteTimeEntryFromIssue(selectedIssue, timeEntryToDelete);
+                refreshTimeEntryList();
+            }
+        }
+    }
+
+    public void onEditTimeEntryClick() {
+//        Issue selectedIssue = this.TV_Issues.getSelectionModel().getSelectedItem();
+        TimeEntry timeEntryToEdit = this.TV_TimeEntries.getSelectionModel().getSelectedItem();
+        if (timeEntryToEdit != null) {
+            new EditTimeEntryDialog().show(timeEntryToEdit);
+            this.dataService.save(timeEntryToEdit);
+            refreshTimeEntryList();
         }
     }
 

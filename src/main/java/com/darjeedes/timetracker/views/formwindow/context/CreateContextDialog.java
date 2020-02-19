@@ -8,6 +8,7 @@ import com.darjeedes.timetracker.views.formwindow.FormWindow;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -46,7 +47,9 @@ public class CreateContextDialog extends FormWindow {
         });
 
         List<Control> controls = new ArrayList<>();
+        controls.add(new Label("Titel des Kontexts"));
         controls.add(this.tfTitle);
+        controls.add(new Label("Jira-Tag"));
         controls.add(this.tfTag);
         controls.add(btContinue);
         controls.add(btCancel);

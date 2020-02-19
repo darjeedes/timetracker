@@ -13,7 +13,8 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.HBM2DLL_CREATE_SCHEMAS" value="false"/>
 
-			<property name="hibernate.hbm2ddl.auto" value="update"/>
+<!--			<property name="hibernate.hbm2ddl.auto" value="update"/>-->
+			<property name="hibernate.hbm2ddl.auto" value="validate"/>
 		</properties>
 	</persistence-unit>
 </persistence>
