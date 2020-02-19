@@ -195,7 +195,6 @@ public class MainController extends BaseController implements Initializable {
     }
 
     public void onEditTimeEntryClick() {
-//        Issue selectedIssue = this.TV_Issues.getSelectionModel().getSelectedItem();
         TimeEntry timeEntryToEdit = this.TV_TimeEntries.getSelectionModel().getSelectedItem();
         if (timeEntryToEdit != null) {
             new EditTimeEntryDialog().show(timeEntryToEdit);
