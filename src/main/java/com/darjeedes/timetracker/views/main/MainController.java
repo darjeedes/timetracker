@@ -1,11 +1,18 @@
 package com.darjeedes.timetracker.views.main;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+import org.h2.util.StringUtils;
+
+import com.darjeedes.timetracker.domain.BaseData;
 import com.darjeedes.timetracker.domain.Context;
 import com.darjeedes.timetracker.domain.Issue;
 import com.darjeedes.timetracker.domain.TimeEntry;
@@ -13,6 +20,8 @@ import com.darjeedes.timetracker.views.BaseController;
 import com.darjeedes.timetracker.views.formwindow.ConfirmDialog;
 import com.darjeedes.timetracker.views.formwindow.context.CreateContextDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.CreateIssueDialog;
+import com.darjeedes.timetracker.views.formwindow.issue.EditBaseDataDialog;
+import com.darjeedes.timetracker.views.formwindow.issue.EditContextDialog;
 import com.darjeedes.timetracker.views.formwindow.issue.EditIssueDialog;
 import com.darjeedes.timetracker.views.formwindow.timeEntry.EditTimeEntryDialog;
 
@@ -54,17 +63,36 @@ public class MainController extends BaseController implements Initializable {
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        TableColumn<Issue, Boolean> statusColumn = new TableColumn("Status");
-        statusColumn.setCellValueFactory(new PropertyValueFactory("running"));
+
+        TableColumn<Issue, Integer> numberColumn = new TableColumn("Number");
+        numberColumn.setCellValueFactory(new PropertyValueFactory("number"));
 
         TableColumn<Issue, String> titleColumn = new TableColumn("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
 
-        statusColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.25));
+        numberColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.25));
         titleColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.74));
 
-        this.TV_Issues.getColumns().addAll(statusColumn, titleColumn);
+        this.TV_Issues.getColumns().addAll(numberColumn, titleColumn);
 
+        // Somehow setting bold to certain rows breaks sorting.
+        //        this.TV_Issues.setRowFactory(new Callback<TableView<Issue>, TableRow<Issue>>() {
+        //            @Override
+        //            public TableRow<Issue> call(TableView<Issue> param) {
+        //                return new TableRow<Issue>() {
+        //                    @Override
+        //                    protected void updateItem(Issue item, boolean empty) {
+        //                        if (item != null) {
+        //                            if (item.isRunning()) {
+        //                                setStyle("-fx-font-weight: bold");
+        //                            } else {
+        //                                setStyle("-fx-font-weight: normal");
+        //                            }
+        //                        }
+        //                    }
+        //                };
+        //            }
+        //        });
 
         TableColumn<TimeEntry, LocalDateTime> kwColumn = new TableColumn<>("KW");
         kwColumn.setCellValueFactory(new PropertyValueFactory("startTime"));
@@ -108,7 +136,6 @@ public class MainController extends BaseController implements Initializable {
             }
         });
 
-
         TableColumn<TimeEntry, LocalDateTime> stopTimeColumn = new TableColumn<>("Stop");
         stopTimeColumn.setCellValueFactory(new PropertyValueFactory("stopTime"));
         stopTimeColumn.setCellFactory(column -> new TableCell<TimeEntry, LocalDateTime>() {
@@ -129,9 +156,22 @@ public class MainController extends BaseController implements Initializable {
         TableColumn<TimeEntry, LocalTime> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory("description"));
 
-        this.TV_TimeEntries.getColumns().addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
+        this.TV_TimeEntries.getColumns()
+                .addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
 
         refreshVBoxRight();
+
+        if (StringUtils.isNullOrEmpty(this.dataService.getBaseData().getIssueManagementSystemBaseUrl())) {
+            onEditBaseDataClick();
+        }
+    }
+
+    public void onEditBaseDataClick() {
+        BaseData baseDataToEdit = this.dataService.getBaseData();
+        if (baseDataToEdit != null) {
+            new EditBaseDataDialog().show(baseDataToEdit);
+            this.dataService.save(baseDataToEdit);
+        }
     }
 
     public void addContext() {
@@ -139,6 +179,15 @@ public class MainController extends BaseController implements Initializable {
         if (contextToAdd != null) {
             this.dataService.addContext(contextToAdd);
             refreshVBoxRight();
+        }
+    }
+
+    public void onEditContextClick() {
+        Context contextToEdit = this.CB_Contexts.getValue();
+        if (contextToEdit != null) {
+            new EditContextDialog().show(contextToEdit);
+            this.dataService.save(contextToEdit);
+            refreshContextComboBox();
         }
     }
 
@@ -179,6 +228,22 @@ public class MainController extends BaseController implements Initializable {
                 this.dataService.deleteIssueFromContext(getCurrentContext(), issueToDelete);
                 refreshIssueList();
                 refreshVBoxRight();
+            }
+        }
+    }
+
+    public void onShowIssueInJiraClick() {
+        Context currentContext = getCurrentContext();
+        Issue issueToShow = this.TV_Issues.getSelectionModel().getSelectedItem();
+        if (currentContext != null && issueToShow != null) {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    URI uri = new URI(this.dataService.getBaseData().getIssueManagementSystemBaseUrl()
+                            + currentContext.getTag() + "-" + issueToShow.getNumber());
+                    Desktop.getDesktop().browse(uri);
+                } catch (IOException | URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

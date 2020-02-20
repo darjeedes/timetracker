@@ -18,6 +18,7 @@ import com.darjeedes.timetracker.persistence.low.DataAccessImpl;
 public class DataService {
 
     private DataAccess dataAccess;
+
     private BaseData baseData;
 
     public DataService() {
@@ -77,6 +78,10 @@ public class DataService {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    public BaseData getBaseData() {
+        return this.baseData;
     }
 
 }

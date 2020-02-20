@@ -1,9 +1,9 @@
-package com.darjeedes.timetracker.views.formwindow.context;
+package com.darjeedes.timetracker.views.formwindow.issue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.darjeedes.timetracker.domain.Context;
+import com.darjeedes.timetracker.domain.BaseData;
 import com.darjeedes.timetracker.views.formwindow.FormWindow;
 
 import javafx.scene.control.Button;
@@ -12,27 +12,23 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateContextDialog extends FormWindow {
+public class EditBaseDataDialog extends FormWindow {
 
-    private Context context;
+    private BaseData baseData;
 
-    private TextField tfTitle;
-
-    private TextField tfTag;
+    private TextField tfbaseUrl;
 
     @Override
     public void prepareEntity() {
-        this.context = new Context();
-        this.context.setName(this.tfTitle.getText());
-        this.context.setTag(this.tfTag.getText());
+        this.baseData.setIssueManagementSystemBaseUrl(this.tfbaseUrl.getText());
     }
 
-    public Context show() {
+    public BaseData show(final BaseData baseData) {
+        this.baseData = baseData;
 
-        Stage window = createStage("New Context");
+        Stage window = createStage("Jira base url configuration");
 
-        this.tfTitle = new TextField();
-        this.tfTag = new TextField();
+        this.tfbaseUrl = new TextField(baseData.getIssueManagementSystemBaseUrl());
 
         Button btContinue = new Button("OK");
         Button btCancel = new Button("Cancel");
@@ -43,15 +39,12 @@ public class CreateContextDialog extends FormWindow {
         });
 
         btCancel.setOnAction(e -> {
-            this.context = null;
             window.close();
         });
 
         List<Control> controls = new ArrayList<>();
-        controls.add(new Label("Context / project name"));
-        controls.add(this.tfTitle);
-        controls.add(new Label("Jira tag"));
-        controls.add(this.tfTag);
+        controls.add(new Label("Jira base url (with trailing slash)"));
+        controls.add(this.tfbaseUrl);
         controls.add(btContinue);
         controls.add(btCancel);
 
@@ -59,7 +52,7 @@ public class CreateContextDialog extends FormWindow {
 
         window.showAndWait();
 
-        return this.context;
+        return this.baseData;
     }
 
 }

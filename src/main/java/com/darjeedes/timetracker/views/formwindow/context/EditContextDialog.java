@@ -1,4 +1,4 @@
-package com.darjeedes.timetracker.views.formwindow.context;
+package com.darjeedes.timetracker.views.formwindow.issue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CreateContextDialog extends FormWindow {
+public class EditContextDialog extends FormWindow {
 
     private Context context;
 
@@ -22,17 +22,17 @@ public class CreateContextDialog extends FormWindow {
 
     @Override
     public void prepareEntity() {
-        this.context = new Context();
-        this.context.setName(this.tfTitle.getText());
         this.context.setTag(this.tfTag.getText());
+        this.context.setName(this.tfTitle.getText());
     }
 
-    public Context show() {
+    public Context show(final Context context) {
+        this.context = context;
 
-        Stage window = createStage("New Context");
+        Stage window = createStage("Edit Context");
 
-        this.tfTitle = new TextField();
-        this.tfTag = new TextField();
+        this.tfTitle = new TextField(context.getName());
+        this.tfTag = new TextField(context.getTag());
 
         Button btContinue = new Button("OK");
         Button btCancel = new Button("Cancel");
@@ -43,7 +43,7 @@ public class CreateContextDialog extends FormWindow {
         });
 
         btCancel.setOnAction(e -> {
-            this.context = null;
+            //            this.context = null;
             window.close();
         });
 

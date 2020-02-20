@@ -31,8 +31,9 @@
                <HBox AnchorPane.rightAnchor="0.0">
                   <children>
                      <Button fx:id="BT_AddContext" mnemonicParsing="false" onAction="#addContext" text="+" />
-                     <Button mnemonicParsing="false" text="edit" textFill="RED" />
+                     <Button mnemonicParsing="false" onAction="#onEditContextClick" text="edit" />
                      <Button mnemonicParsing="false" onAction="#deleteCurrentContext" text="-" />
+                     <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditBaseDataClick" text="b" />
                   </children>
                </HBox>
             </children>
@@ -57,6 +58,7 @@
             <contextMenu>
                <ContextMenu>
                  <items>
+                     <MenuItem mnemonicParsing="false" onAction="#onShowIssueInJiraClick" text="Show in Jira..." />
                      <MenuItem mnemonicParsing="false" onAction="#onEditIssueClick" text="Edit" />
                      <MenuItem mnemonicParsing="false" onAction="#deleteCurrentIssue" text="Delete" />
                  </items>
