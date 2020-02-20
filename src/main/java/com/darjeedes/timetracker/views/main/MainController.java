@@ -74,6 +74,8 @@ public class MainController extends BaseController implements Initializable {
         titleColumn.prefWidthProperty().bind(this.TV_Issues.widthProperty().multiply(0.74));
 
         this.TV_Issues.getColumns().addAll(numberColumn, titleColumn);
+        numberColumn.setComparator(numberColumn.getComparator().reversed());
+        this.TV_Issues.getSortOrder().add(numberColumn);
 
         // Somehow setting bold to certain rows breaks sorting.
         //        this.TV_Issues.setRowFactory(new Callback<TableView<Issue>, TableRow<Issue>>() {
@@ -158,6 +160,10 @@ public class MainController extends BaseController implements Initializable {
 
         this.TV_TimeEntries.getColumns()
                 .addAll(kwColumn, startDateColumn, startTimeColumn, stopTimeColumn, durationColumn, descriptionColumn);
+        startDateColumn.setComparator(startDateColumn.getComparator().reversed());
+        startTimeColumn.setComparator(startTimeColumn.getComparator().reversed());
+        this.TV_TimeEntries.getSortOrder().add(startDateColumn);
+        this.TV_TimeEntries.getSortOrder().add(startTimeColumn);
 
         refreshVBoxRight();
 
@@ -274,10 +280,10 @@ public class MainController extends BaseController implements Initializable {
         if (selectedContextId != null && !selectedContextId.equals(this.selectedContextId)) {
             this.selectedContextId = selectedContextId;
             this.selectedIssueId = null;
+            refreshIssueList();
+            refreshVBoxRight();
         }
 
-        refreshIssueList();
-        refreshVBoxRight();
     }
 
     public void onIssueClick() {
@@ -319,16 +325,18 @@ public class MainController extends BaseController implements Initializable {
     private void refreshIssueList() {
         Context currentContext = getCurrentContext();
         if (currentContext != null) {
-            this.TV_Issues.setItems(FXCollections.observableList(getCurrentContext().getIssues()));
-            this.TV_Issues.refresh();
+            this.TV_Issues.getItems().clear();
+            this.TV_Issues.getItems().addAll(getCurrentContext().getIssues());
+            this.TV_Issues.sort();
         }
     }
 
     private void refreshTimeEntryList() {
         Issue currentIssue = getCurrentIssue();
         if (currentIssue != null) {
-            this.TV_TimeEntries.setItems(FXCollections.observableList(currentIssue.getTimeEntries()));
-            this.TV_TimeEntries.refresh();
+            this.TV_TimeEntries.getItems().clear();
+            this.TV_TimeEntries.getItems().addAll(currentIssue.getTimeEntries());
+            this.TV_TimeEntries.sort();
         }
     }
 

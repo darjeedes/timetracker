@@ -23,7 +23,7 @@
       <children>
          <AnchorPane>
             <children>
-               <Label text="Kontext / Projekt:">
+               <Label text="Project:">
                   <font>
                      <Font name="System Bold" size="12.0" />
                   </font>
@@ -46,7 +46,7 @@
          </AnchorPane>
          <AnchorPane>
             <children>
-               <Label text="Vorgänge:">
+               <Label text="Issues:">
                   <font>
                      <Font name="System Bold" size="12.0" />
                   </font></Label>
@@ -80,7 +80,7 @@
          </AnchorPane>
          <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
            <tabs>
-             <Tab text="Notizen">
+             <Tab text="Notes">
                <content>
                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
                         <children>
@@ -93,7 +93,7 @@
                      </AnchorPane>
                </content>
              </Tab>
-             <Tab text="Zeit">
+             <Tab text="Time tracking">
                <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>

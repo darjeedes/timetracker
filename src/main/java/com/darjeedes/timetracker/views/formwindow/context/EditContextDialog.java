@@ -29,7 +29,7 @@ public class EditContextDialog extends FormWindow {
     public Context show(final Context context) {
         this.context = context;
 
-        Stage window = createStage("Edit Context");
+        Stage window = createStage("Edit project");
 
         this.tfTitle = new TextField(context.getName());
         this.tfTag = new TextField(context.getTag());
@@ -48,7 +48,7 @@ public class EditContextDialog extends FormWindow {
         });
 
         List<Control> controls = new ArrayList<>();
-        controls.add(new Label("Context / project name"));
+        controls.add(new Label("Name"));
         controls.add(this.tfTitle);
         controls.add(new Label("Jira tag"));
         controls.add(this.tfTag);

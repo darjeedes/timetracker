@@ -29,7 +29,7 @@ public class CreateContextDialog extends FormWindow {
 
     public Context show() {
 
-        Stage window = createStage("New Context");
+        Stage window = createStage("New project");
 
         this.tfTitle = new TextField();
         this.tfTag = new TextField();
@@ -48,7 +48,7 @@ public class CreateContextDialog extends FormWindow {
         });
 
         List<Control> controls = new ArrayList<>();
-        controls.add(new Label("Context / project name"));
+        controls.add(new Label("Name"));
         controls.add(this.tfTitle);
         controls.add(new Label("Jira tag"));
         controls.add(this.tfTag);

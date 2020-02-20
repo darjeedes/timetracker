@@ -17,7 +17,7 @@ public class Main extends Application {
         SceneManager sceneManager = new SceneManager(primaryStage);
         sceneManager.switchToMainScene();
 
-        primaryStage.setTitle("Time Tracker");
+        primaryStage.setTitle("timetracker");
         InputStream iconStream = ClassLoader.getSystemResourceAsStream("icons8-uhr-64.png");
         if (iconStream != null) {
             primaryStage.getIcons().add(new Image(iconStream));
