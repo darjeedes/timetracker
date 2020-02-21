@@ -3,6 +3,7 @@ package com.darjeedes.timetracker.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -23,6 +24,7 @@ public class Issue extends TimeTrackerEntity {
     /**
      * The notes.
      */
+    @Column(length = 15000)
     private String notes;
 
     /**
